@@ -2,14 +2,14 @@
 'use client';
 
 import LoginForm from '@/components/LoginForm';
-import NavBar from '@/components/NavBarNoAuth';
+import NavBarNoAuth from '@/components/NavBarNoAuth';
 
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
       {/* Barra de navegación */}
       <header className="fixed top-0 left-0 w-full z-10">
-        <NavBar />
+        <NavBarNoAuth />
       </header>
 
       {/* Formulario */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "@headlessui/react";
+import { Menu, MenuItem } from "@headlessui/react";
 import { useRouter } from 'next/navigation';
 import { ChevronDown, Search, UserCircle } from "lucide-react";
 import { useState } from "react";
@@ -28,20 +28,39 @@ const Navbar = () => {
             <ChevronDown size={16} />
           </Menu.Button>
           <Menu.Items className="absolute mt-2 w-40 bg-[#2a2a2a] rounded-lg shadow-lg p-2 z-50">
+            
             <Menu.Item>
               {({ active }: { active: boolean }) => (
                 <button className={`w-full text-left px-2 py-1 rounded ${active ? "bg-cyan-500" : ""}`}>
-                  Option 1
+                  My contents
                 </button>
               )}
             </Menu.Item>
+           
             <Menu.Item>
               {({ active }: { active: boolean }) => (
                 <button className={`w-full text-left px-2 py-1 rounded ${active ? "bg-cyan-500" : ""}`}>
-                  Option 2
+                  Help requests
                 </button>
               )}
             </Menu.Item>
+            
+            <Menu.Item>
+              {({ active }: { active: boolean }) => (
+                <button className={`w-full text-left px-2 py-1 rounded ${active ? "bg-cyan-500" : ""}`}>
+                  My study groups
+                </button>
+              )}
+            </Menu.Item>
+
+            <Menu.Item>
+              {({ active }: { active: boolean }) => (
+                <button className={`w-full text-left px-2 py-1 rounded ${active ? "bg-cyan-500" : ""}`}>
+                  My chats
+                </button>
+              )}
+            </Menu.Item>
+
           </Menu.Items>
         </Menu>
 
