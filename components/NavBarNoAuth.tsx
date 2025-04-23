@@ -16,6 +16,10 @@ const NavbarNoAuth = () => {
         router.push('/login')
     }
 
+    const handleSignUp = (): void => {
+      router.push('/signUp')
+    }
+
   return (
     <nav className="h-16 w-full bg-gradient-to-r from-blue-500 via-purple-500 to-purple-700 text-white px-6 py-4 shadow-md flex items-center justify-between">
       <div className="flex space-x-6 items-center">
@@ -27,7 +31,7 @@ const NavbarNoAuth = () => {
       {/* Navigation buttons */}
       <div className="flex space-x-6 items-center">
         <button onClick={handleSignIn} className="hover:text-cyan-400">Sign in</button>
-        <button className="hover:text-cyan-400">Sign up</button>
+        <button onClick={handleSignUp} className="hover:text-cyan-400">Sign up</button>
       </div>
     </nav>
   );

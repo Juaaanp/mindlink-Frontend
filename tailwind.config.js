@@ -9,6 +9,13 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+
+  fontFamily: {
+    inter: ['var(--font-inter)'],
+    poppins: ['var(--font-poppins)'],
+    urbanist: ['var(--font-urbanist)'],
+  },
+  
 }
 
 
