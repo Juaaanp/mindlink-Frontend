@@ -6,16 +6,16 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        inter: ['var(--font-inter)'],
+        poppins: ['var(--font-poppins)'],
+        urbanist: ['var(--font-urbanist)'],
+      },
+    },
   },
   plugins: [],
+};
 
-  fontFamily: {
-    inter: ['var(--font-inter)'],
-    poppins: ['var(--font-poppins)'],
-    urbanist: ['var(--font-urbanist)'],
-  },
-  
-}
 
 

@@ -39,14 +39,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${urbanist.variable} ${inter.variable} antialiased`}
       >
         {children}
       </body>
     </html>
-
   );
 }
+
