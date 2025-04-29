@@ -3,6 +3,10 @@ import NavbarNoAuth from '@/components/NavBarNoAuth';
 
 
 export default function SignUpPage() {
+
+
+  
+
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
       {/* Barra de navegación */}

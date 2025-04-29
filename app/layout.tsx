@@ -9,6 +9,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { Poppins } from "next/font/google";
 import { Urbanist } from "next/font/google";
+import { Toaster } from 'react-hot-toast';
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600"], variable: "--font-poppins" });
 const urbanist = Urbanist({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-urbanist" });
@@ -44,6 +45,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${urbanist.variable} ${inter.variable} antialiased`}
       >
         {children}
+        <Toaster /> {/* <- Toast Notifications */}
       </body>
     </html>
   );
