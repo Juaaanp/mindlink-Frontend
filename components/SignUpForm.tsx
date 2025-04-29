@@ -1,6 +1,6 @@
-'use client';
+'use client'; //Que este archivo se ejecute en el navegador, no en el servidor
 
-import { useState } from 'react';
+import { useState } from 'react'; //Permite guardar y cambiar valores
 import { useRouter } from 'next/navigation'; // Para redirigir
 import toast from 'react-hot-toast';
 
@@ -11,7 +11,7 @@ const categories = [
   'Art',
   'Music',
   'Health',
-  'Education',
+  'Education',  
   'Business',
   'Travel',
 ];
@@ -19,7 +19,7 @@ const categories = [
 export default function SignUpForm() {
   const router = useRouter();
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState(''); //Guarda valores con el tiempo y se cambian con la función
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
@@ -34,8 +34,8 @@ export default function SignUpForm() {
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => { //cuando hago click en signUp
+    e.preventDefault(); //Evita que se recargue la página
     setError(''); // Limpiar error anterior
     setLoading(true);
 
@@ -46,7 +46,7 @@ export default function SignUpForm() {
       interests: selectedInterests,
     };
 
-    try {
+    try { //await: esperar a que esta operación termine antes de seguir, solo dentro de una func async
       const response = await fetch('http://localhost:8090/students/register', {
         method: 'POST',
         headers: {
@@ -58,7 +58,7 @@ export default function SignUpForm() {
       if (!response.ok) {
         const errorMessage = await response.text();
         setLoading(false);
-        throw new Error(errorMessage);
+        throw new Error(errorMessage); //Fuerza el salto al catch
       }
     
       const data = await response.json();
@@ -120,7 +120,7 @@ export default function SignUpForm() {
           </div>
         </div>
 
-        {/* Error */}
+        {/* Error ya no es necesario este div */}
         {error && (
           <div className="bg-red-500 text-white p-3 rounded-md text-center font-poppins">
             {error}

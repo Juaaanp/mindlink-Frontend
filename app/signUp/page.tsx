@@ -4,9 +4,6 @@ import NavbarNoAuth from '@/components/NavBarNoAuth';
 
 export default function SignUpPage() {
 
-
-  
-
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
       {/* Barra de navegación */}
@@ -27,7 +24,7 @@ export default function SignUpPage() {
             <p className="text-lg text-xl font-poppins mt-10">
               Welcome to MindLink! 🎓 We're excited for you to be a part of our learning community. Here you can explore a variety of educational courses designed to help you reach your goals.
             </p>
-            <p className="text-lg font-poppins mt-20">your knowledge journey begins here! 🌟</p>
+            <p className="text-lg font-poppins mt-20">Your knowledge journey begins here! 🌟</p>
           </div>
         </div>
 
