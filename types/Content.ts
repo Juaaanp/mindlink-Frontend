@@ -3,5 +3,5 @@ export interface Content {
     title: string;
     type: string;
     topic: string;
-    author: string;
+    authorId: string;
 }

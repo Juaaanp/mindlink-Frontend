@@ -1,6 +1,7 @@
 'use client';
 
 import NavBarAuth from "@/components/NavBarAuth";
+import Contents from '@/components/ContentComponents/Contents'
 
 export default function HomePage() {
   return (
@@ -61,7 +62,9 @@ export default function HomePage() {
           </div>
 
         </div>
+        <Contents />
       </div>
+        
     </div>
   );
 }
