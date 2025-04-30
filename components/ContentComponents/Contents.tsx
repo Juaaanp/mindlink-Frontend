@@ -12,7 +12,7 @@ export default function Contents() {
     useEffect(() => {
         const fetchContents = async () => {
             try {
-                const response = await fetch('http://localhost:8090/contents');
+                const response = await fetch('http://localhost:8090/contents/withAuthorName');
                 if (!response.ok) throw new Error('Error loading contents');
                 const data: Content[] = await response.json();
                 setContents(data);

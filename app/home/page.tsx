@@ -1,9 +1,10 @@
 'use client';
 
 import NavBarAuth from "@/components/NavBarAuth";
-import Contents from '@/components/ContentComponents/Contents'
+import Contents from '@/components/ContentComponents/Contents';
 
 export default function HomePage() {
+
   return (
     <div>
       <NavBarAuth />
@@ -12,6 +13,7 @@ export default function HomePage() {
         <p className="text-lg md:text-xl text-center max-w-xl mb-6 font-poppins">
           Connect, learn, and collaborate with other students using an app designed to enhance your learning.
         </p>
+
         <div className="text-center">
           <h4 className="text-4xl md:text-5xl font-bold mt-5 mb-6 font-poppins">Categories</h4>
 
@@ -22,15 +24,13 @@ export default function HomePage() {
                 <button
                   key={label}
                   className="text-white px-4 py-2 rounded-lg shadow-md font-poppins transition-all duration-300"
-                  style={{
-                    background: '#313440', // Color base
-                  }}
+                  style={{ background: '#313440' }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background =
-                      'linear-gradient(to right, #2F3C63, #00DBE3, #BF00FF, #5B0C75)'; // Gradiente al pasar el ratón
+                      'linear-gradient(to right, #2F3C63, #00DBE3, #BF00FF, #5B0C75)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = '#313440'; // Volver al color base
+                    e.currentTarget.style.background = '#313440';
                   }}
                 >
                   {label}
@@ -44,15 +44,13 @@ export default function HomePage() {
                 <button
                   key={label}
                   className="text-white px-4 py-2 rounded-lg shadow-md font-poppins transition-all duration-300"
-                  style={{
-                    background: '#313440', // Color base
-                  }}
+                  style={{ background: '#313440' }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background =
-                      'linear-gradient(to right, #2F3C63, #00DBE3, #BF00FF, #5B0C75)'; // Gradiente al pasar el ratón
+                      'linear-gradient(to right, #2F3C63, #00DBE3, #BF00FF, #5B0C75)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = '#313440'; // Volver al color base
+                    e.currentTarget.style.background = '#313440';
                   }}
                 >
                   {label}
@@ -60,12 +58,11 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-
         </div>
         <Contents />
       </div>
-        
     </div>
   );
 }
+
 

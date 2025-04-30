@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import {User} from 'phosphor-react';
 import toast from 'react-hot-toast';
 
 export default function LoginForm() {
@@ -44,12 +45,12 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="bg-[#1e1e1e] p-8 rounded-2xl shadow-md w-full max-w-sm">
+    <div className="bg-black p-10 rounded-2xl shadow-md w-full max-w-lg">
       <div className="flex items-center justify-center mb-6">
-        <h1 className="text-white text-2xl font-bold">Welcome!</h1>
+        <User size={80}/>
       </div>
 
-      <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
+      <form className="flex flex-col space-y-4 font-poppins" onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"
@@ -77,7 +78,10 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-gradient-to-r from-cyan-400 to-fuchsia-600 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition"
+          className="text-white py-3 rounded-lg font-semibold hover:opacity-90 transition"
+          style={{
+            backgroundImage: 'linear-gradient(to right, #2F3C63, #00DBE3, #BF00FF, #5B0C75)',
+          }}
         >
           Sign in
         </button>
@@ -85,3 +89,5 @@ export default function LoginForm() {
     </div>
   );
 }
+
+
