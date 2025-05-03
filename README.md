@@ -2,6 +2,8 @@
 
 - El icono de ocultar contraseña de react esta bug
 - Se hace el ícono de carga a través de una bandera
+- En el directorio lib esta la URL global de axios, contentModal usa axios
+- Agregar loaders
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
