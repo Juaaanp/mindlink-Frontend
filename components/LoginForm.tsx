@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {User} from 'phosphor-react';
 import toast from 'react-hot-toast';
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginForm() {
 
+  const { setUser } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,6 +27,7 @@ export default function LoginForm() {
     try {
       const response = await fetch('http://localhost:8090/students/login', {
       method: 'POST',
+      credentials: "include",
       headers: {
         'Content-Type': 'application/json',
       },
@@ -35,6 +38,8 @@ export default function LoginForm() {
         throw new Error(await response.text());
       }
       //Si fue correcta la solicitud
+      const student = await response.json();
+      setUser(student); //Almacenar el usuario en el contexto
       toast.success('Signed in successfully!');
       router.push('/home')
 
