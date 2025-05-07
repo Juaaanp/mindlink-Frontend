@@ -10,7 +10,14 @@ const NavBarAuth = () => {
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
 
-  const handleLogoClick = (): void => { //Cada vez que se hace click al logo:
+  const items = [
+    { label: "My contents", onClick: () => router.push('/explore/myContents') },
+    { label: "Help requests", onClick: () => router.push('/explore/helpRequests') },
+    { label: "My study groups", onClick: () => router.push('/explore/myStudyGroups') },
+    { label: "My chats", onClick: () => router.push('/explore/myChats') },
+  ];
+
+  const handleLogoClick = (): void => {
     router.push('/home');
     console.log("Logo clicked");
   };
@@ -49,39 +56,24 @@ const NavBarAuth = () => {
             <span className="font-poppins font-bold text-[15px]">Explore</span>
             <ChevronDown size={16} />
           </Menu.Button>
+          
           <Menu.Items className="absolute mt-2 w-40 bg-[#2a2a2a] rounded-lg shadow-lg p-2 z-50">
 
-            <Menu.Item>
-              {({ active }: { active: boolean }) => (
-                <button className={`w-full text-left px-2 py-1 rounded font-poppins ${active ? "bg-cyan-500" : ""}`}>
-                  My contents
-                </button>
-              )}
-            </Menu.Item>
-
-            <Menu.Item>
-              {({ active }: { active: boolean }) => (
-                <button className={`w-full text-left px-2 py-1 font-poppins rounded ${active ? "bg-cyan-500" : ""}`}>
-                  Help requests
-                </button>
-              )}
-            </Menu.Item>
-
-            <Menu.Item>
-              {({ active }: { active: boolean }) => (
-                <button className={`w-full text-left px-2 py-1 font-poppins rounded ${active ? "bg-cyan-500" : ""}`}>
-                  My study groups
-                </button>
-              )}
-            </Menu.Item>
-
-            <Menu.Item>
-              {({ active }: { active: boolean }) => (
-                <button className={`w-full text-left px-2 py-1 font-poppins rounded ${active ? "bg-cyan-500" : ""}`}>
-                  My chats
-                </button>
-              )}
-            </Menu.Item>
+            <Menu.Items className="...">
+              {items.map((item, index) => (
+                <Menu.Item key={index}>
+                  {({ active }) => (
+                    <button
+                      onClick={item.onClick}
+                      className={`w-full text-left px-3 py-2 rounded-md font-poppins text-sm transition ${active ? "bg-cyan-600 text-white" : "hover:bg-neutral-700"
+                        }`}
+                    >
+                      {item.label}
+                    </button>
+                  )}
+                </Menu.Item>
+              ))}
+            </Menu.Items>
 
           </Menu.Items>
         </Menu>

@@ -14,7 +14,9 @@ export default function Home() {
 
   return (
     <div>
-      <NavbarNoAuth/>
+      <header className="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a] shadow-md">
+        <NavbarNoAuth />
+      </header>
       <div className="min-h-screen flex flex-col items-center justify-center text-white">
       <h1 className="text-4xl md:text-5xl font-bold mb-4">Bienvenido a Mindlink</h1>
       <p className="text-lg md:text-xl text-center max-w-xl mb-6">

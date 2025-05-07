@@ -10,8 +10,11 @@ export default function HomePage() {
 
   return (
     <div>
-      <NavBarAuth />
-      <div className="min-h-screen flex flex-col items-center justify-center text-white">
+      {/* Barra de navegación fija */}
+      <header className="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a] shadow-md">
+        <NavBarAuth />
+      </header>
+      <div className="pt-24 min-h-screen flex flex-col items-center justify-center text-white">
         <h1 className="text-4xl md:text-4xl mb-4 font-poppins font-bold flex flex-col items-center">Welcome to Mindlink
           {user ? (
             <h1>{user.name}📚</h1>

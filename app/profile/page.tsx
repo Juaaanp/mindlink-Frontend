@@ -4,20 +4,33 @@ import { useState, useEffect } from 'react';
 import NavBarAuth from '@/components/NavBarAuth';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
+import api from '@/lib/api';
+import { useRouter } from 'next/navigation';
 
 export default function ProfilePage() {
   const [username, setName] = useState('John Doe');
   const [email, setEmail] = useState('john.doe@example.com');
+  const [interests, setInterests] = useState<String[]>([]);
   const [role] = useState('Student');
+  const router = useRouter();
 
   const { user } = useAuth();
-  
+
   useEffect(() => {
     if (user) {
       setName(user.name || 'Unknown');
       setEmail(user.email || 'No email');
+      setInterests(user.interests || null);
     }
-  }, [user]); 
+  }, [user]);
+
+  const handleLogout = (): void => {
+    api.post("/students/logout", null, {
+      withCredentials: true,
+    });
+
+    router.push('/login');
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white font-poppins">
@@ -46,8 +59,11 @@ export default function ProfilePage() {
 
         {/* Secciones */}
         <div className="mt-10 w-full max-w-2xl space-y-6">
-          <Section title="My Contents">
-            <p>You haven't created any content yet.</p>
+          <Section title="My Interests">
+            {interests ? (<div>{interests.map((name, index) => (<div key={index}>{name}</div>))}</div>) : (
+              <p>You haven't selected any interest.</p>
+            )}
+
           </Section>
 
           <Section title="Settings">
@@ -60,7 +76,7 @@ export default function ProfilePage() {
           </Section>
 
           <Section title="Danger Zone">
-            <button className="text-red-500 hover:underline">Logout</button>
+            <button onClick={handleLogout} className="text-red-500 hover:underline">Logout</button>
           </Section>
         </div>
       </main>
