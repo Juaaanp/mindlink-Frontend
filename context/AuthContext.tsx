@@ -1,36 +1,43 @@
-// context/AuthContext.tsx
-'use client';
-import { createContext, useContext, useState } from 'react';
+'use client'
+import { createContext, useContext, useEffect, useState } from "react";
 
-type User = {
-  id: string;
+export interface StudentDTO {
+  id: number;
   name: string;
   email: string;
-};
+  interests: string[];
+}
 
-type AuthContextType = {
-  user: User | null;
-  login: (user: User) => void;
-  logout: () => void;
-};
+interface AuthContextType {
+  user: StudentDTO | null;
+  setUser: (user: StudentDTO | null) => void;
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<StudentDTO | null>(null);
 
-  const login = (userData: User) => setUser(userData);
-  const logout = () => setUser(null);
+  //Solo al reiniciar la app, intenta recuperar al usuario actual (El que coincida con las cookies)
+  useEffect(() => { 
+    fetch("http://localhost:8090/students/me", {
+      credentials: "include", // <- esto es esencial
+    })
+      .then(res => (res.ok ? res.json() : null))
+      .then(data => {
+        if (data) setUser(data);
+      });
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
+export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used within AuthProvider');
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
-}
+};

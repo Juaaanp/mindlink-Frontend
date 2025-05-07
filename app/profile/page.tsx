@@ -1,13 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NavBarAuth from '@/components/NavBarAuth';
 import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
 
 export default function ProfilePage() {
-  const [username] = useState('John Doe');
-  const [email] = useState('john.doe@example.com');
+  const [username, setName] = useState('John Doe');
+  const [email, setEmail] = useState('john.doe@example.com');
   const [role] = useState('Student');
+
+  const { user } = useAuth();
+  
+  useEffect(() => {
+    if (user) {
+      setName(user.name || 'Unknown');
+      setEmail(user.email || 'No email');
+    }
+  }, [user]); 
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white font-poppins">

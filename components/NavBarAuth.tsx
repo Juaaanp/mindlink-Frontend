@@ -11,7 +11,7 @@ const NavBarAuth = () => {
   const [search, setSearch] = useState<string>("");
 
   const handleLogoClick = (): void => { //Cada vez que se hace click al logo:
-    router.push('/');
+    router.push('/home');
     console.log("Logo clicked");
   };
 
@@ -39,7 +39,7 @@ const NavBarAuth = () => {
           onClick={handleLogoClick}
           className="hover:text-cyan-400 flex flex-col items-center h-full font-poppins font-bold"
         >
-          <GraduationCap size={30}/>
+          <GraduationCap size={30} />
           <span className="text-center text-[13px]">MindLink</span>
         </button>
 
