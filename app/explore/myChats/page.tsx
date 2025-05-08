@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 // Datos simulados para los chats y mensajes
 const mockChats = [
@@ -53,10 +54,14 @@ export default function MyChats() {
           <div className="text-2xl font-bold mb-2">mindlink</div>
         </div>
         <nav className="flex flex-col gap-2">
-          <button className="text-left py-2 px-4 rounded hover:bg-[#313440] transition">Mis contenidos</button>
+          <Link href="/explore/myContents" className="text-left py-2 px-4 rounded hover:bg-[#313440] transition">
+            Mis contenidos
+          </Link>
           <button className="text-left py-2 px-4 rounded hover:bg-[#313440] transition">Solicitudes de ayuda</button>
           <button className="text-left py-2 px-4 rounded hover:bg-[#313440] transition">Mis grupos de estudio</button>
-          <button className="text-left py-2 px-4 rounded bg-[#313440]">Mis chats</button>
+          <Link href="/explore/myChats" className="text-left py-2 px-4 rounded bg-[#313440]">
+            Mis chats
+          </Link>
         </nav>
       </aside>
 

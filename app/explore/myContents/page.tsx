@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import ContentCard from '@/components/ContentComponents/ContentCard';
 import { Content } from '@/types/Content';
+import Link from 'next/link';
 
 // Datos simulados para los contenidos
 const initialContents: Content[] = [
@@ -55,10 +56,14 @@ export default function MyContents() {
           </div>
         </div>
         <nav className="flex flex-col gap-2">
-          <button className={`text-left py-2 px-4 rounded transition ${selected === 'Mis contenidos' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>Mis contenidos</button>
+          <Link href="/explore/myContents" className={`text-left py-2 px-4 rounded transition ${selected === 'Mis contenidos' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>
+            Mis contenidos
+          </Link>
           <button className={`text-left py-2 px-4 rounded transition ${selected === 'Solicitudes de ayuda' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>Solicitudes de ayuda</button>
           <button className={`text-left py-2 px-4 rounded transition ${selected === 'Mis grupos de estudio' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>Mis grupos de estudio</button>
-          <button className={`text-left py-2 px-4 rounded transition ${selected === 'Mis chats' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>Mis chats</button>
+          <Link href="/explore/myChats" className={`text-left py-2 px-4 rounded transition ${selected === 'Mis chats' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>
+            Mis chats
+          </Link>
         </nav>
       </aside>
 
