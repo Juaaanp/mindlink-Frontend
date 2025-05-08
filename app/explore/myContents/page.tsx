@@ -5,7 +5,7 @@ import ContentCard from '@/components/ContentComponents/ContentCard';
 import { Content } from '@/types/Content';
 
 // Datos simulados para los contenidos
-const mockContents: Content[] = [
+const initialContents: Content[] = [
   {
     id: '1',
     title: 'Título del contenido 1',
@@ -34,6 +34,15 @@ const mockContents: Content[] = [
 
 export default function MyContents() {
   const [selected, setSelected] = useState('Mis contenidos');
+  const [contents, setContents] = useState<Content[]>(initialContents);
+
+  const handleEdit = (updated: Content) => {
+    setContents(prev => prev.map(c => c.id === updated.id ? updated : c));
+  };
+
+  const handleDelete = (id: string) => {
+    setContents(prev => prev.filter(c => c.id !== id));
+  };
 
   return (
     <div className="min-h-screen flex bg-[#18181b]">
@@ -67,8 +76,14 @@ export default function MyContents() {
         {/* Contenidos */}
         <section className="flex-1 flex flex-col items-start p-10 gap-6 bg-[#18181b]">
           <div className="flex flex-wrap gap-8">
-            {mockContents.map(content => (
-              <ContentCard key={content.id} content={content} />
+            {contents.map(content => (
+              <ContentCard
+                key={content.id}
+                content={content}
+                editMode
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
             ))}
           </div>
         </section>

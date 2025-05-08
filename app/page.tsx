@@ -9,7 +9,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleExplorarOnClick = (): void => {
-    router.push('gordon.jpg')
+    router.push('cum.jpeg')
   }
 
   return (
