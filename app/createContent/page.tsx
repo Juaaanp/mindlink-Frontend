@@ -3,13 +3,15 @@
 import CreateContentForm from "@/components/ContentComponents/CreateContentForm";
 import NavBarAuth from "@/components/NavBarAuth";
 import { FilePlus, PencilLine, BookOpenText } from "lucide-react";
+import { useState } from "react";
 
 export default function CreateContentPage() {
+  const [searchQuery, setSearchQuery] = useState<string>("");
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white font-poppins">
       {/* Barra de navegación */}
       <header className="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a] shadow-md">
-        <NavBarAuth />
+      <NavBarAuth onSearchChange={setSearchQuery} />
       </header>
 
       <main className="flex-grow flex items-center justify-center pt-20 px-6">
