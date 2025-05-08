@@ -6,9 +6,17 @@ import { ChevronDown, Search } from "lucide-react";
 import { FileText, Users, GraduationCap, UserCircle } from "phosphor-react";
 import { useState } from "react";
 
-const NavBarAuth = () => {
+type NavBarAuthProps = {
+  onSearchChange: (query: string) => void;
+};
+
+const NavBarAuth = ({ onSearchChange }: NavBarAuthProps) => {
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    onSearchChange(e.target.value); // Propaga el valor al padre
+  };
 
   const items = [
     { label: "My contents", onClick: () => router.push('/explore/myContents') },
@@ -85,7 +93,7 @@ const NavBarAuth = () => {
             type="text"
             placeholder="Search..."
             value={search}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+            onChange={handleInputChange}
             className="bg-transparent text-white focus:outline-none w-64 font-poppins text-[13px]"
           />
         </div>

@@ -3,23 +3,28 @@
 import NavBarAuth from "@/components/NavBarAuth";
 import Contents from '@/components/ContentComponents/Contents';
 import { useAuth } from "@/context/AuthContext";
+import { useState } from "react";
 
 export default function HomePage() {
 
   const { user } = useAuth();
-
+  const [selectedType, setSelectedType] = useState<string | undefined>(undefined);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const handleCategoryClick = (type: string) => {
+    setSelectedType(type); // Actualiza el estado
+  };
   return (
     <div>
       {/* Barra de navegación fija */}
       <header className="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a] shadow-md">
-        <NavBarAuth />
+        <NavBarAuth onSearchChange={setSearchQuery} />
       </header>
       <div className="pt-24 min-h-screen flex flex-col items-center justify-center text-white">
         <h1 className="text-4xl md:text-4xl mb-4 font-poppins font-bold flex flex-col items-center">Welcome to Mindlink
           {user ? (
             <h1>{user.name}📚</h1>
           ) : (
-            <p>No estás logueado.</p>
+            <p>You're not logged.</p>
           )}</h1>
         <p className="text-lg md:text-xl text-center max-w-xl mb-6 font-poppins">
           Connect, learn, and collaborate with other students using an app designed to enhance your learning.
@@ -43,6 +48,7 @@ export default function HomePage() {
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = '#313440';
                   }}
+                  onClick={() => handleCategoryClick(label)}
                 >
                   {label}
                 </button>
@@ -63,6 +69,7 @@ export default function HomePage() {
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = '#313440';
                   }}
+                  onClick={() => handleCategoryClick(label)}
                 >
                   {label}
                 </button>
@@ -70,7 +77,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <Contents />
+        <Contents type={selectedType} searchQuery={searchQuery} />
       </div>
     </div>
   );
