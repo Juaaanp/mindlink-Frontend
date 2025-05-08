@@ -1,18 +1,21 @@
 'use client';
 
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 export default function CreateContentForm() {
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
   const [topic, setTopic] = useState('');
   const [image, setImage] = useState<File | null>(null);
+  const {user} = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData();
     formData.append('title', title);
+    formData.append('authorId', user.id);
     formData.append('type', type);
     formData.append('topic', topic);
     if (image) {

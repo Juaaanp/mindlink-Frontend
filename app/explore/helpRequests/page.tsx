@@ -35,7 +35,7 @@ export default function helpRequests() {
     return (
         <div>
             <header className="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a] shadow-md">
-                <NavBarAuth />
+            <NavBarAuth onSearchChange={setSearchQuery} />
             </header>
             <div className="pt-24 min-h-screen bg-[#0a0a0a] text-white p-6 space-y-10 font-poppins">
 
