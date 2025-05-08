@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     fetch("http://localhost:8090/students/me", {
       credentials: "include", // <- esto es esencial
     })
-      .then(res => (res.ok ? res.json() : null))
+      .then(res => (res.ok ? res.json() : null)) //Esto debería dar null si no es ok? no funciona eso
       .then(data => {
         if (data) setUser(data);
       });
