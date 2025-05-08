@@ -4,12 +4,16 @@ import { useState } from 'react';
 import { Content } from "@/types/Content";
 import Image from "next/image";
 import ContentModal from "./ContentModal";
+import ContentEditModal from "./ContentEditModal";
 
 type Props = {
   content: Content;
+  editMode?: boolean;
+  onEdit?: (updated: Content) => void;
+  onDelete?: (id: string) => void;
 };
 
-export default function ContentCard({ content }: Props) {
+export default function ContentCard({ content, editMode = false, onEdit, onDelete }: Props) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -42,9 +46,18 @@ export default function ContentCard({ content }: Props) {
         </div>
       </div>
 
-      {/* Modal con la información detallada */}
+      {/* Modal con la información detallada o de edición */}
       {showModal && (
-        <ContentModal content={content} onClose={() => setShowModal(false)} />
+        editMode ? (
+          <ContentEditModal
+            content={content}
+            onClose={() => setShowModal(false)}
+            onEdit={onEdit!}
+            onDelete={onDelete!}
+          />
+        ) : (
+          <ContentModal content={content} onClose={() => setShowModal(false)} />
+        )
       )}
     </>
   );
