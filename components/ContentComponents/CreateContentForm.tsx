@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { toast } from 'react-hot-toast';
+import api from '@/lib/api';
 
 export default function CreateContentForm() {
   const [title, setTitle] = useState('');
@@ -10,21 +12,42 @@ export default function CreateContentForm() {
   const [image, setImage] = useState<File | null>(null);
   const {user} = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('authorId', user.id);
-    formData.append('type', type);
-    formData.append('topic', topic);
-    if (image) {
-      formData.append('image', image);
+  
+    if (!user) {
+      toast.error("User not logged in");
+      return;
     }
-
-    console.log('Formulario enviado');
-    // Aquí puedes enviar formData al backend con fetch o axios
+  
+    const contentData = {
+      title: title,
+      authorId: user.id.toString(),
+      type: type,
+      body: topic,
+    };
+  
+    try {
+      const response = await api.post('/contents', contentData);
+  
+      if (response.status === 200 || response.status === 201) {
+        toast.success("Content created successfully!");
+        console.log("Content created:", response.data);
+        // limpiar formulario si quieres
+        setTitle('');
+        setType('');
+        setTopic('');
+        setImage(null);
+      } else {
+        console.warn("Unexpected response:", response);
+        toast.error("Failed to create content.");
+      }
+    } catch (error: any) {
+      console.error("Error creating content:", error);
+      toast.error("Error creating content.");
+    }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] text-white">
