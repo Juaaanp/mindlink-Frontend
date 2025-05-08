@@ -61,7 +61,7 @@ export default function ProfilePage() {
         <div className="mt-10 w-full max-w-2xl space-y-6">
           <Section title="My Interests">
             {interests ? (<div>{interests.map((name, index) => (<div key={index}>{name}</div>))}</div>) : (
-              <p>You haven't selected any interest.</p>
+              <p>You haven't slected any interest.</p>
             )}
 
           </Section>
