@@ -3,37 +3,37 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-// Datos simulados para los chats y mensajes
+// Mock data for chats and messages
 const mockChats = [
   {
     id: '1',
-    name: 'Estudiante 1',
-    lastMessage: 'Hola, ¿cómo va el proyecto?',
-    lastTime: 'Hace 5 min',
+    name: 'Student 1',
+    lastMessage: 'Hi, how is the project going?',
+    lastTime: '5 min ago',
     messages: [
-      { id: 1, fromMe: false, text: 'Hola, ¿cómo va el proyecto?' },
-      { id: 2, fromMe: true, text: '¡Va muy bien, gracias!' },
-      { id: 3, fromMe: false, text: '¿Necesitas ayuda?' },
+      { id: 1, fromMe: false, text: 'Hi, how is the project going?' },
+      { id: 2, fromMe: true, text: 'Going great, thanks!' },
+      { id: 3, fromMe: false, text: 'Need any help?' },
     ],
   },
   {
     id: '2',
-    name: 'Estudiante 2',
-    lastMessage: '¿Podemos revisar el código?',
-    lastTime: 'Hace 15 min',
+    name: 'Student 2',
+    lastMessage: 'Can we review the code?',
+    lastTime: '15 min ago',
     messages: [
-      { id: 1, fromMe: false, text: '¿Podemos revisar el código?' },
-      { id: 2, fromMe: true, text: 'Claro, mándamelo.' },
+      { id: 1, fromMe: false, text: 'Can we review the code?' },
+      { id: 2, fromMe: true, text: 'Sure, send it over.' },
     ],
   },
   {
     id: '3',
-    name: 'Estudiante 3',
-    lastMessage: '¡Listo el informe!',
-    lastTime: 'Hace 1 hora',
+    name: 'Student 3',
+    lastMessage: 'Report is ready!',
+    lastTime: '1 hour ago',
     messages: [
-      { id: 1, fromMe: false, text: '¡Listo el informe!' },
-      { id: 2, fromMe: true, text: '¡Genial, gracias!' },
+      { id: 1, fromMe: false, text: 'Report is ready!' },
+      { id: 2, fromMe: true, text: 'Great, thanks!' },
     ],
   },
 ];
@@ -48,24 +48,27 @@ export default function MyChats() {
 
   return (
     <div className="min-h-screen flex bg-[#18181b]">
-      {/* Menú lateral */}
+      {/* Sidebar */}
       <aside className="w-64 bg-[#23232b] p-6 flex flex-col gap-4 text-white min-h-screen">
         <div className="mb-8">
-          <div className="text-2xl font-bold mb-2">mindlink</div>
+          <div className="flex items-center gap-2">
+            <span className="text-3xl">🎓</span>
+            <span className="font-bold text-lg">mindlink</span>
+          </div>
         </div>
         <nav className="flex flex-col gap-2">
           <Link href="/explore/myContents" className="text-left py-2 px-4 rounded hover:bg-[#313440] transition">
-            Mis contenidos
+            My Contents
           </Link>
-          <button className="text-left py-2 px-4 rounded hover:bg-[#313440] transition">Solicitudes de ayuda</button>
-          <button className="text-left py-2 px-4 rounded hover:bg-[#313440] transition">Mis grupos de estudio</button>
+          <button className="text-left py-2 px-4 rounded hover:bg-[#313440] transition">Help Requests</button>
+          <button className="text-left py-2 px-4 rounded hover:bg-[#313440] transition">Study Groups</button>
           <Link href="/explore/myChats" className="text-left py-2 px-4 rounded bg-[#313440]">
-            Mis chats
+            My Chats
           </Link>
         </nav>
       </aside>
 
-      {/* Lista de chats */}
+      {/* Chat list */}
       <section className="w-80 bg-[#18181b] border-r border-[#23232b] p-0 flex flex-col">
         {mockChats.map((chat) => (
           <button
@@ -85,9 +88,9 @@ export default function MyChats() {
         ))}
       </section>
 
-      {/* Área de mensajes */}
+      {/* Messages area */}
       <main className="flex-1 flex flex-col justify-between bg-[#23232b] relative">
-        {/* Mensajes */}
+        {/* Messages */}
         <div className="flex-1 overflow-y-auto p-10 flex flex-col gap-4">
           {selectedChat?.messages.map((msg) => (
             <div
@@ -98,7 +101,7 @@ export default function MyChats() {
             </div>
           ))}
         </div>
-        {/* Input de mensaje */}
+        {/* Message input */}
         <form
           className="w-full flex items-center gap-2 p-6 bg-[#23232b] border-t border-[#313440]"
           onSubmit={e => {
@@ -110,7 +113,7 @@ export default function MyChats() {
           <input
             className="flex-1 bg-[#18181b] text-white rounded-lg px-4 py-2 outline-none border border-[#313440] focus:border-[#7f53ac] transition"
             type="text"
-            placeholder="Escribir mensaje"
+            placeholder="Type a message"
             value={inputValue}
             onChange={e => setInputValue(e.target.value)}
           />

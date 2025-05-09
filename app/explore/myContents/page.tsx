@@ -5,36 +5,36 @@ import ContentCard from '@/components/ContentComponents/ContentCard';
 import { Content } from '@/types/Content';
 import Link from 'next/link';
 
-// Datos simulados para los contenidos
+// Mock data for contents
 const initialContents: Content[] = [
   {
     id: '1',
-    title: 'Título del contenido 1',
-    type: 'Apunte',
-    body: 'Descripción breve del contenido 1...',
-    authorName: 'Juan Pérez',
+    title: 'Content Title 1',
+    type: 'Note',
+    body: 'Brief description of content 1...',
+    authorName: 'John Doe',
     imageUrl: '/fondoPrueba.jpg',
   },
   {
     id: '2',
-    title: 'Título del contenido 2',
-    type: 'Resumen',
-    body: 'Descripción breve del contenido 2...',
-    authorName: 'María López',
+    title: 'Content Title 2',
+    type: 'Summary',
+    body: 'Brief description of content 2...',
+    authorName: 'Mary Smith',
     imageUrl: '/fondoPrueba.jpg',
   },
   {
     id: '3',
-    title: 'Título del contenido 3',
-    type: 'Ejercicio',
-    body: 'Descripción breve del contenido 3...',
-    authorName: 'Carlos Ruiz',
+    title: 'Content Title 3',
+    type: 'Exercise',
+    body: 'Brief description of content 3...',
+    authorName: 'Carl White',
     imageUrl: '/fondoPrueba.jpg',
   },
 ];
 
 export default function MyContents() {
-  const [selected, setSelected] = useState('Mis contenidos');
+  const [selected, setSelected] = useState('My Contents');
   const [contents, setContents] = useState<Content[]>(initialContents);
 
   const handleEdit = (updated: Content) => {
@@ -56,20 +56,20 @@ export default function MyContents() {
           </div>
         </div>
         <nav className="flex flex-col gap-2">
-          <Link href="/explore/myContents" className={`text-left py-2 px-4 rounded transition ${selected === 'Mis contenidos' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>
-            Mis contenidos
+          <Link href="/explore/myContents" className={`text-left py-2 px-4 rounded transition ${selected === 'My Contents' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>
+            My Contents
           </Link>
-          <button className={`text-left py-2 px-4 rounded transition ${selected === 'Solicitudes de ayuda' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>Solicitudes de ayuda</button>
-          <button className={`text-left py-2 px-4 rounded transition ${selected === 'Mis grupos de estudio' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>Mis grupos de estudio</button>
-          <Link href="/explore/myChats" className={`text-left py-2 px-4 rounded transition ${selected === 'Mis chats' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>
-            Mis chats
+          <button className={`text-left py-2 px-4 rounded transition ${selected === 'Help Requests' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>Help Requests</button>
+          <button className={`text-left py-2 px-4 rounded transition ${selected === 'Study Groups' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>Study Groups</button>
+          <Link href="/explore/myChats" className={`text-left py-2 px-4 rounded transition ${selected === 'My Chats' ? 'bg-[#313440]' : 'hover:bg-[#313440]'}`}>
+            My Chats
           </Link>
         </nav>
       </aside>
 
       {/* Main content */}
       <main className="flex-1 flex flex-col bg-[#18181b]">
-        {/* Header con degradado */}
+        {/* Header with gradient */}
         <header className="w-full p-4 flex items-center justify-between rounded-b-2xl" style={{background: 'linear-gradient(90deg, #23c6e6 0%, #7f53ac 100%)'}}>
           <div className="flex items-center gap-2">
             <span className="text-white font-bold text-xl">mindlink</span>
@@ -78,7 +78,7 @@ export default function MyContents() {
             <span className="text-white text-2xl">👤</span>
           </div>
         </header>
-        {/* Contenidos */}
+        {/* Contents */}
         <section className="flex-1 flex flex-col items-start p-10 gap-6 bg-[#18181b]">
           <div className="flex flex-wrap gap-8">
             {contents.map(content => (
