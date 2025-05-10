@@ -1,8 +1,7 @@
 "use client";
 
-import { Menu, MenuItem } from "@headlessui/react";
 import { useRouter } from 'next/navigation';
-import { ChevronDown, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { FileText, Users, GraduationCap, UserCircle } from "phosphor-react";
 import { useState } from "react";
 
@@ -17,13 +16,6 @@ const NavBarAuth = ({ onSearchChange }: NavBarAuthProps) => {
     setSearch(e.target.value);
     onSearchChange(e.target.value); // Propaga el valor al padre
   };
-
-  const items = [
-    { label: "My contents", onClick: () => router.push('/explore/myContents') },
-    { label: "Help requests", onClick: () => router.push('/explore/helpRequests') },
-    { label: "My study groups", onClick: () => router.push('/explore/myStudyGroups') },
-    { label: "My chats", onClick: () => router.push('/explore/myChats') },
-  ];
 
   const handleLogoClick = (): void => {
     router.push('/home');
@@ -57,34 +49,6 @@ const NavBarAuth = ({ onSearchChange }: NavBarAuthProps) => {
           <GraduationCap size={30} />
           <span className="text-center text-[13px]">MindLink</span>
         </button>
-
-        {/* Explore dropdown */}
-        <Menu as="div" className="relative">
-          <Menu.Button className="flex items-center space-x-1 hover:text-cyan-400">
-            <span className="font-poppins font-bold text-[15px]">Explore</span>
-            <ChevronDown size={16} />
-          </Menu.Button>
-          
-          <Menu.Items className="absolute mt-2 w-40 bg-[#2a2a2a] rounded-lg shadow-lg p-2 z-50">
-
-            <Menu.Items className="...">
-              {items.map((item, index) => (
-                <Menu.Item key={index}>
-                  {({ active }) => (
-                    <button
-                      onClick={item.onClick}
-                      className={`w-full text-left px-3 py-2 rounded-md font-poppins text-sm transition ${active ? "bg-cyan-600 text-white" : "hover:bg-neutral-700"
-                        }`}
-                    >
-                      {item.label}
-                    </button>
-                  )}
-                </Menu.Item>
-              ))}
-            </Menu.Items>
-
-          </Menu.Items>
-        </Menu>
 
         {/* Search bar */}
         <div className="flex items-center bg-[#2a2a2a] rounded-lg px-4 py-1 mx-4">

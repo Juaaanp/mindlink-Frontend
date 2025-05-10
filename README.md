@@ -9,7 +9,7 @@
 import { useAuth } from "../context/AuthContext";
 const { user } = useAuth();
 user.name; etc
-- Para hacer las páginas responsive con el Sidebar: El <main> tiene esta propiedad en global.css
+- Para hacer las páginas responsive con el Sidebar: El <body> tiene esta propiedad en global.css
 <main className="pt-24 min-h-screen bg-[#0a0a0a] text-white p-6 space-y-10 font-poppins"></main>
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
