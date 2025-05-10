@@ -37,7 +37,7 @@ export default function Contents({ type, searchQuery }: ContentsProps) {
                         const authorRes = await fetch(`http://localhost:8090/contents/author/${encodeURIComponent(searchQuery)}`, {
                             method: "GET",
                             credentials: "include",
-                          });
+                        });
 
                         if (!authorRes.ok) throw new Error("Error searching by author");
                         data = await authorRes.json();
@@ -48,7 +48,7 @@ export default function Contents({ type, searchQuery }: ContentsProps) {
                     const typeRes = await fetch(`http://localhost:8090/contents/type/${encodeURIComponent(type)}`, {
                         method: "GET",
                         credentials: "include",
-                      });
+                    });
 
                     if (!typeRes.ok) throw new Error("Error searching by type");
                     data = await typeRes.json();

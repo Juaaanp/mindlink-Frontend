@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import ContentCard from '@/components/ContentComponents/ContentCard';
 import { Content } from '@/types/Content';
+import NavBarAuth from '@/components/NavBarAuth';
+import Sidebar from '@/components/Sidebar';
 
 // Datos simulados para los contenidos
 const initialContents: Content[] = [
@@ -33,8 +35,10 @@ const initialContents: Content[] = [
 ];
 
 export default function MyContents() {
+
   const [selected, setSelected] = useState('Mis contenidos');
   const [contents, setContents] = useState<Content[]>(initialContents);
+  const [searchQuery, setSearchQuery] = useState<String>('');
 
   const handleEdit = (updated: Content) => {
     setContents(prev => prev.map(c => c.id === updated.id ? updated : c));
@@ -45,7 +49,15 @@ export default function MyContents() {
   };
 
   return (
-    <div className="min-h-screen flex bg-[#18181b]">
+
+    <main className="pt-24 min-h-screen bg-[#0a0a0a] text-white p-6 font-poppins">
+
+      <header className="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a] shadow-md">
+        <NavBarAuth onSearchChange={setSearchQuery} />
+      </header>
+
+      <Sidebar />
+
       {/* Sidebar */}
       <aside className="w-64 bg-[#23232b] p-6 flex flex-col gap-4 text-white min-h-screen">
         <div className="mb-8">
@@ -65,7 +77,7 @@ export default function MyContents() {
       {/* Main content */}
       <main className="flex-1 flex flex-col bg-[#18181b]">
         {/* Header con degradado */}
-        <header className="w-full p-4 flex items-center justify-between rounded-b-2xl" style={{background: 'linear-gradient(90deg, #23c6e6 0%, #7f53ac 100%)'}}>
+        <header className="w-full p-4 flex items-center justify-between rounded-b-2xl" style={{ background: 'linear-gradient(90deg, #23c6e6 0%, #7f53ac 100%)' }}>
           <div className="flex items-center gap-2">
             <span className="text-white font-bold text-xl">mindlink</span>
           </div>
@@ -88,6 +100,6 @@ export default function MyContents() {
           </div>
         </section>
       </main>
-    </div>
+    </main>
   );
 }
