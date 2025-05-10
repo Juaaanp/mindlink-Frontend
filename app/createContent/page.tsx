@@ -1,7 +1,7 @@
 'use client';
 
 import CreateContentForm from "@/components/ContentComponents/CreateContentForm";
-import NavBarAuth from "@/components/NavBarAuth";
+import NavBarAuth from "@/components/NavBars/NavBarAuth";
 import { FilePlus, PencilLine, BookOpenText } from "lucide-react";
 import { useState } from "react";
 

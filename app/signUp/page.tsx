@@ -1,5 +1,5 @@
 import SignUpForm from '@/components/SignUpForm';
-import NavbarNoAuth from '@/components/NavBarNoAuth';
+import NavbarNoAuth from '@/components/NavBars/NavBarNoAuth';
 
 
 export default function SignUpPage() {

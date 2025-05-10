@@ -1,6 +1,6 @@
 'use client';
 
-import NavBarAuth from "@/components/NavBarAuth";
+import NavBarAuth from "@/components/NavBars/NavBarAuth";
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 

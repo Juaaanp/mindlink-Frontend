@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import NavBarAuth from '@/components/NavBarAuth';
+import NavBarAuth from '@/components/NavBars/NavBarAuth';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/api';

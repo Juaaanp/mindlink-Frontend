@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import NavbarNoAuth from '@/components/NavBarNoAuth';
+import NavbarNoAuth from '@/components/NavBars/NavBarNoAuth';
 
 export default function About() {
   return (

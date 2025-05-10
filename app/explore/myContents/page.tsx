@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import ContentCard from '@/components/ContentComponents/ContentCard';
 import { Content } from '@/types/Content';
-import NavBarAuth from '@/components/NavBarAuth';
+import NavBarAuth from '@/components/NavBars/NavBarAuth';
 import Sidebar from '@/components/Sidebar';
 
 // Datos simulados para los contenidos

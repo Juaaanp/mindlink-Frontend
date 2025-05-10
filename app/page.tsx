@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import NavbarNoAuth from '@/components/NavBarNoAuth';
+import NavbarNoAuth from '@/components/NavBars/NavBarNoAuth';
 
 export default function Home() {
   const router = useRouter();

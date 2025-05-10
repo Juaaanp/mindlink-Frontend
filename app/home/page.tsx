@@ -1,6 +1,6 @@
 'use client';
 
-import NavBarAuth from "@/components/NavBarAuth";
+import NavBarAuth from "@/components/NavBars/NavBarAuth";
 import Contents from '@/components/ContentComponents/Contents';
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";

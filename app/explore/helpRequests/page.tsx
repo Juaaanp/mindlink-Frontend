@@ -1,6 +1,6 @@
 'use client';
 
-import NavBarAuth from '@/components/NavBarAuth';
+import NavBarAuth from '@/components/NavBars/NavBarAuth';
 import Sidebar from '@/components/Sidebar';
 import AddHelpRequestModal from './AddHelpRequestModal';
 import { useState } from 'react';
