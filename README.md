@@ -3,11 +3,12 @@
 - El icono de ocultar contraseña de react esta bug
 - Se hace el ícono de carga a través de una bandera
 - En el directorio lib esta la URL global de axios, contentModal usa axios
-- Agregar loaders
-- Se debe poner credentials: "include" en todas las peticiones donde se quiera mantener la sesión (depués de login) para no perder las cookies de inicio de sesión en el backend
+- Agregar loaders <--------
+- Las peticiones se hacen con axios
 - Para obtener el usuario en las vistas: 
 import { useAuth } from "../context/AuthContext";
 const { user } = useAuth();
+if (!user) return toast...
 user.name; etc
 - Para hacer las páginas responsive con el Sidebar: El <body> tiene esta propiedad en global.css
 <main className="pt-16 min-h-screen bg-[#0a0a0a] text-white p-6 space-y-10 font-poppins"></main>

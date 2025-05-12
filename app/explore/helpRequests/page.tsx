@@ -3,56 +3,62 @@
 import NavBarAuth from '@/components/NavBars/NavBarAuth';
 import Sidebar from '@/components/Sidebar';
 import AddHelpRequestModal from './AddHelpRequestModal';
+import { HelpRequest } from '@/types/HelpRequest';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import api from '@/lib/api';
+import { useAuth } from '@/context/AuthContext';
+import toast from 'react-hot-toast';
 
-type HelpRequest = {  //Hacer conexión con backend de los helpRequests (dejarlo funcional)
-    id: string;
-    student: string;
-    subject: string;
-    type: string;
-    body: string;
-    response?: string;
-    priorityLevel: number;
-    state: 'OPEN' | 'RESOLVED';
-};
-
-export default function HelpRequests() {
+export default function HelpRequests() { //Funcionalidad extra: Que los requests se muestren en forma inversa
     const [showModal, setShowModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filter, setFilter] = useState<'ALL' | 'OPEN' | 'RESOLVED'>('ALL');
+    const { user } = useAuth();
+    const [helpRequests, setHelpRequests] = useState<HelpRequest[]>([]);
+    const [editingRequest, setEditingRequest] = useState<HelpRequest | null>(null);
 
-    const allRequests: HelpRequest[] = [
-        {
-            id: '1',
-            student: 'Student123',
-            subject: 'Math Help',
-            type: 'Doubt',
-            body: 'I need help with integrals.',
-            priorityLevel: 2,
-            state: 'OPEN',
-        },
-        {
-            id: '2',
-            student: 'Student456',
-            subject: 'Physics Help',
-            type: 'Homework',
-            body: 'Can someone explain Newton’s third law?',
-            response: 'Yes! It states that for every action, there is an equal and opposite reaction.',
-            priorityLevel: 1,
-            state: 'RESOLVED',
-        },
-        {
-            id: '3',
-            student: 'Student789',
-            subject: 'Art Question',
-            type: 'Project',
-            body: 'How do I blend colors in digital art?',
-            priorityLevel: 3,
-            state: 'OPEN',
-        },
-    ];
 
-    const filteredRequests = allRequests.filter((req) => {
+    const handleRequestChange = (newOrUpdatedReq: HelpRequest) => { //Para cargar los requests al crear o editar uno
+        setHelpRequests((prev) => {
+            const exists = prev.some(req => req.id === newOrUpdatedReq.id);
+            if (exists) {
+                return prev.map(req => req.id === newOrUpdatedReq.id ? newOrUpdatedReq : req);
+            } else {
+                return [...prev, newOrUpdatedReq];
+            }
+        });
+    };
+
+    // Abrir modal en modo edición
+    const handleEdit = (request: HelpRequest) => {
+        setEditingRequest(request);
+        setShowModal(true);
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this help request?")) return;
+
+        try {
+            await api.delete(`/helpRequests/${id}`);
+            setHelpRequests(prev => prev.filter(req => req.id !== id)); //Quita el request eliminado sin volver a hacer un llamado al backend
+            toast.success("Help request deleted");
+        } catch (error) {
+            console.error(error);
+            toast.error("Error deleting request");
+        }
+    };
+
+    useEffect(() => {
+        if (!user?.id) return;
+
+        api
+            .get(`/helpRequests/findByStudent/${user.id}`)
+            .then((res) => setHelpRequests(res.data))
+            .catch(console.error);
+    }, [user?.id]);
+
+    const filteredRequests = helpRequests.filter((req) => {
         if (filter === 'ALL') return true;
         return req.state === filter;
     });
@@ -126,6 +132,21 @@ export default function HelpRequests() {
                                 <p className="text-sm mt-2 text-green-300">Response: {req.response}</p>
                             )}
                             <p className="text-xs mt-2 text-yellow-400">Priority: {req.priorityLevel}</p>
+                            {/* Botones Editar y Eliminar */}
+                            <div className="mt-3 flex gap-2 justify-end">
+                                <button
+                                    onClick={() => handleEdit(req)}
+                                    className="px-3 py-1 bg-yellow-600 rounded hover:bg-yellow-700 text-sm"
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(req.id)}
+                                    className="px-3 py-1 bg-red-600 rounded hover:bg-red-700 text-sm"
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     ))}
 
@@ -135,7 +156,20 @@ export default function HelpRequests() {
                 </section>
             </div>
 
-            {showModal && <AddHelpRequestModal onClose={() => setShowModal(false)} />}
+            {showModal && (
+                <AddHelpRequestModal
+                    onClose={() => {
+                        setShowModal(false);
+                        setEditingRequest(null);
+                    }}
+                    existingRequest={editingRequest}
+                    onUpdate={(newOrUpdatedReq) => {
+                        handleRequestChange(newOrUpdatedReq);
+                        setShowModal(false);
+                        setEditingRequest(null);
+                    }}
+                />
+            )}
         </main>
     );
 }
