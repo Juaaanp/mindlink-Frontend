@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { HelpRequest } from '@/types/HelpRequest';
 import NavBarModerator from '../../NavBar';
+import {toast} from 'react-hot-toast';
 
 export default function HelpRequestsModerator() { //Comprobar funcionalidad con backend, hacer lo de la prioridad, mostrar response en vista estudiante, cambiar prop del NavBar, extra: notificacion al usuario
   const [helpRequests, setHelpRequests] = useState<HelpRequest[]>([]);
@@ -27,20 +28,25 @@ export default function HelpRequestsModerator() { //Comprobar funcionalidad con 
 
   const handleSubmitResponse = async (req: HelpRequest) => {
     const responseText = responseInputs[req.id];
-    if (!responseText?.trim()) return;
+    if (!responseText?.trim()) {
+      toast.error("Response input is empty");
+      return;
+    } 
 
     try {
       const updated = {
-        ...req,
-        response: responseText,
+        ...req, //Copia los campos de la request
+        response: responseText, //Y cambia estos campos
         state: 'RESOLVED',
       };
 
       await api.put(`/helpRequests/${req.id}`, updated);
 
+      toast.success("Help request updated");
+
       setHelpRequests(prev =>
         prev.map(r => (r.id === req.id ? updated : r))
-      );
+      ); //Remplaza la req actual por su versión actualizada
       setResponseInputs(prev => ({ ...prev, [req.id]: '' }));
     } catch (error) {
       console.error('Error submitting response:', error);

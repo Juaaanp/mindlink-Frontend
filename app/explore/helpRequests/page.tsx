@@ -132,21 +132,23 @@ export default function HelpRequests() { //Funcionalidad extra: Que los requests
                                 <p className="text-sm mt-2 text-green-300">Response: {req.response}</p>
                             )}
                             <p className="text-xs mt-2 text-yellow-400">Priority: {req.priorityLevel}</p>
-                            {/* Botones Editar y Eliminar */}
-                            <div className="mt-3 flex gap-2 justify-end">
-                                <button
-                                    onClick={() => handleEdit(req)}
-                                    className="px-3 py-1 bg-yellow-600 rounded hover:bg-yellow-700 text-sm"
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(req.id)}
-                                    className="px-3 py-1 bg-red-600 rounded hover:bg-red-700 text-sm"
-                                >
-                                    Delete
-                                </button>
-                            </div>
+                            {/* Botones Editar y Eliminar solo si está OPEN */}
+                            {req.state === 'OPEN' && (
+                                <div className="mt-3 flex gap-2 justify-end">
+                                    <button
+                                        onClick={() => handleEdit(req)}
+                                        className="px-3 py-1 bg-yellow-600 rounded hover:bg-yellow-700 text-sm"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(req.id)}
+                                        className="px-3 py-1 bg-red-600 rounded hover:bg-red-700 text-sm"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     ))}
 
