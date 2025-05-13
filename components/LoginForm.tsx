@@ -2,13 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {User} from 'phosphor-react';
+import { User } from 'phosphor-react';
 import toast from 'react-hot-toast';
 import { useAuth } from "../context/AuthContext";
+import api from '@/lib/api';
 
 export default function LoginForm() {
 
-  const { setUser } = useAuth();
+  const { setUser, setIsAdmin } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,26 +25,37 @@ export default function LoginForm() {
       password
     }
 
+    if (email == "admin@mindlink.com" && password == "admin123") { //Si es admin
+      api.post("/students/logout", null, {
+        withCredentials: true,
+      });
+      setIsAdmin(true);
+      toast.success('Admin signed in successfully!');
+      router.push('/moderator/home')
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:8090/students/login', {
-      method: 'POST',
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(loginRequest),
+        method: 'POST',
+        credentials: "include",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginRequest),
       });
 
       if (!response.ok) {
         throw new Error(await response.text());
       }
       //Si fue correcta la solicitud
+      setIsAdmin(false);
       const student = await response.json();
       setUser(student); //Almacenar el usuario en el contexto
       toast.success('Signed in successfully!');
       router.push('/home')
 
-    } catch(error: any) {
+    } catch (error: any) {
       toast.error(error.message || 'Error desconocido');
       setLoading(false);
     }
@@ -52,7 +64,7 @@ export default function LoginForm() {
   return (
     <div className="bg-black p-10 rounded-2xl shadow-md w-full max-w-lg">
       <div className="flex items-center justify-center mb-6">
-        <User size={80}/>
+        <User size={80} />
       </div>
 
       <form className="flex flex-col space-y-4 font-poppins" onSubmit={handleSubmit}>
@@ -62,7 +74,7 @@ export default function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="bg-[#2a2a2a] text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-          
+
         />
 
         <input

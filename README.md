@@ -11,6 +11,7 @@ const { user } = useAuth();
 if (!user) return toast...
 user.name; etc
 - Para hacer las páginas responsive con el Sidebar: El <body> tiene esta propiedad en global.css
+- Para evitar problemas con el sidebar que empuja el contenido en pages donde no esta, se debe poner un estado parecido a isAdmin en estas vistas, (creo); /, /profile, etc
 <main className="pt-16 min-h-screen bg-[#0a0a0a] text-white p-6 space-y-10 font-poppins"></main>
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).

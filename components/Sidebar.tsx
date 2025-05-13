@@ -3,12 +3,18 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Pin, PinOff } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
+  const { isAdmin } = useAuth();
 
   const [pinned, setPinned] = useState(true);
+
+  if (isAdmin) {
+    return null;
+  }
 
   useEffect(() => {
     if (pinned) {
@@ -19,7 +25,7 @@ export default function Sidebar() {
       document.body.classList.add('without-sidebar');
     }
   }, [pinned]);
-  
+
 
   useEffect(() => { //Asegura que el pinned no este fijado cuando se cargue si es false
     const stored = localStorage.getItem('sidebarPinned');
@@ -69,11 +75,10 @@ export default function Sidebar() {
             <button
               key={item.path}
               onClick={() => router.push(item.path)}
-              className={`w-full text-left py-2 px-4 rounded transition ${
-                pathname === item.path
+              className={`w-full text-left py-2 px-4 rounded transition ${pathname === item.path
                   ? 'bg-[#313440]'
                   : 'hover:bg-[#313440] hover:text-gray-200'
-              }`}
+                }`}
             >
               {item.label}
             </button>
