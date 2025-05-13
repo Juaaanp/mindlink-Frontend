@@ -11,7 +11,6 @@ export default function HomePage() {
   const { user } = useAuth();
   const [selectedType, setSelectedType] = useState<string | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [pinned, setPinned] = useState(false);
 
   const handleCategoryClick = (type: string) => {
     setSelectedType(type); // Actualiza el estado
@@ -29,7 +28,7 @@ export default function HomePage() {
       <div className="pt-24 min-h-screen flex flex-col items-center justify-center text-white">
         <h1 className="text-4xl md:text-4xl mb-4 font-bold flex flex-col items-center">Welcome to Mindlink
           {user ? (
-            <h1>{user.name}📚</h1>
+            <p>{user.name}📚</p>
           ) : (
             <p>You're not logged.</p>
           )}</h1>

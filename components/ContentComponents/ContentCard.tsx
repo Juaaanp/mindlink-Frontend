@@ -28,7 +28,7 @@ export default function ContentCard({ content, editMode = false, onEdit, onDelet
           <Image
             src="/fondoPrueba.jpg"
             alt={content.title}
-            layout="fill"
+            fill
             objectFit="cover"
             className="opacity-90"
           />

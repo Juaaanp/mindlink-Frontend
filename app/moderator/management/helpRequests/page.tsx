@@ -6,7 +6,7 @@ import { HelpRequest } from '@/types/HelpRequest';
 import NavBarModerator from '../../NavBar';
 import {toast} from 'react-hot-toast';
 
-export default function HelpRequestsModerator() { //Comprobar funcionalidad con backend, hacer lo de la prioridad, mostrar response en vista estudiante, cambiar prop del NavBar, extra: notificacion al usuario
+export default function HelpRequestsModerator() { //hacer lo de la prioridad, cambiar prop del NavBar, extra: notificacion al usuario
   const [helpRequests, setHelpRequests] = useState<HelpRequest[]>([]);
   const [filter, setFilter] = useState<'ALL' | 'OPEN' | 'RESOLVED'>('ALL');
   const [responseInputs, setResponseInputs] = useState<Record<string, string>>({});
@@ -17,7 +17,7 @@ export default function HelpRequestsModerator() { //Comprobar funcionalidad con 
 
   const fetchRequests = () => {
     api
-      .get('/helpRequests')
+      .get('/helpRequests/findWithPriority')
       .then(res => setHelpRequests(res.data))
       .catch(console.error);
   };
@@ -92,7 +92,7 @@ export default function HelpRequestsModerator() { //Comprobar funcionalidad con 
                   <h3 className="text-lg font-semibold">{req.subject}</h3>
                   <p className="text-sm text-gray-300">{req.body}</p>
                   <p className="text-xs text-yellow-400 mt-1">Priority: {req.priorityLevel}</p>
-                  <p className="text-xs text-cyan-400">Student: {req.student}</p>
+                  <p className="text-xs text-cyan-400">Student: {req.studentName}</p>
 
                   {req.state === 'RESOLVED' ? (
                     <p className="text-sm text-green-400 mt-2">

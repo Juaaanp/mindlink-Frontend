@@ -7,4 +7,5 @@ export type HelpRequest = {
   response?: string;
   priorityLevel: number;
   state: string; //OPEN || RESOLVED
+  studentName: String;
 };
