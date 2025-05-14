@@ -26,7 +26,7 @@ export default function StudyGroupCard({
         rounded-2xl
         shadow-lg
         p-6
-        w-[300px]
+        w-[320px]
         max-w-md
         cursor-pointer
         transform

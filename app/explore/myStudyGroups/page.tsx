@@ -3,46 +3,37 @@
 import NavBarAuth from "@/components/NavBars/NavBarAuth";
 import Sidebar from "@/components/Sidebar";
 import StudyGroupCard from "./StudyGroupCard";
-import StudyGroupModal, { StudyGroup } from "./StudyGroupModal";
-import { useState } from "react";
-import CreateGroupModal from "./CreateGroupModal";
+import StudyGroupModal from "./StudyGroupModal";
+import { StudyGroup } from "@/types/StudyGroup";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import api from "@/lib/api";
 
 //Formación de grupos de estudio automáticos con base en intereses compartidos. Formación automática de grupos de estudio.
 //Generación automática de conexiones entre usuarios (grafo), si han valorado contenidos similares o han estado en el mismo grupo de estudio.
 //Pestaña: Grupos de estudio sugeridos. Participar en grupos de estudio sugeridos automáticamente.
-//Preguntar a jahnca que atributos de un study group
-
-interface Student {
-    id: number;
-    name: string;
-    email: string;
-}
-
-interface GroupDTO {
-    title: string; topic: string; description?: string;
-}
+//LISTAS ENLAZADAS
 
 export default function MyStudyGroups() {
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [groups, setGroups] = useState<StudyGroup[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<StudyGroup | null>(null); //Cuando esto no es null se abre el modal
-    const [isCreating, setIsCreating] = useState(false);
+    const { user } = useAuth();
 
     // Ejemplos de grupos (ahora con campo contents)
     const exampleGroups: StudyGroup[] = [
         {
             id: 1,
-            title: "Pepe",
             topic: "Matemáticas Discretas",
             description: "Grupo para dudas, ejercicios y recursos de la materia.",
             students: [
                 { id: 1, name: "Ana Ruiz", email: "ana@example.com" },
-                { id: 2, name: "Carlos Pérez", email: "carlos@example.com" },
+                { id: 2, name: "Carlos Pérez", email: "carlos@example.com" }, //Hacer dto asi y mandar desde el back, 
             ],
             contents: ["Apuntes Capítulo 1", "Ejercicios Semana 2"],
         },
         {
             id: 2,
-            title: "Frontend Team",
             topic: "Frontend Development",
             description: "Learn React, Tailwind, and more with peers.",
             students: [
@@ -55,6 +46,16 @@ export default function MyStudyGroups() {
         // ...otros grupos
     ];
 
+    useEffect(() => {
+
+        //Loader, funcionalidad de agregar contenidos, editarlos?, borrarlos?, agregar descripción
+        if (!user?.id) return;
+        api
+            .get(`/studyGroups/findByStudent/${user.id}`)
+            .then((res) => setGroups(res.data))
+            .catch(console.error);
+    }, [user?.id]);
+
     const openModal = (group: StudyGroup) => {
         setSelectedGroup(group);
     };
@@ -66,14 +67,6 @@ export default function MyStudyGroups() {
         console.log("Uniéndose al grupo", group.id);
         closeModal();
     };
-
-    const openCreate = () => setIsCreating(true);
-    const closeCreate = () => setIsCreating(false);
-
-    const handleCreateGroup = (group: GroupDTO) => {
-    console.log('Nuevo grupo creado:', group);
-    // Aquí puedes enviarlo al backend
-  };
 
     return (
         <main className="pt-20 min-h-screen bg-[#0a0a0a] text-white p-6 font-poppins relative">
@@ -88,26 +81,10 @@ export default function MyStudyGroups() {
             {/* Contenido */}
             <div className="">
 
-                {/* Título y botón de creación */}
-                <div className="flex items-center justify-end mb-6">
-                    <button
-                        onClick={openCreate}
-                        className="bg-cyan-600 hover:bg-cyan-500 text-white py-2 px-4 rounded-lg transition"
-                    >
-                        Create Study Group
-                    </button>
-                    {isCreating && (<CreateGroupModal
-                        isOpen={true}
-                        onClose={closeCreate}
-                        onSubmit={handleCreateGroup}
-                    />)}
-                    
-                </div>
-
                 {/* Contenedor del grid alineado a la izquierda */}
                 <div className="flex justify-start">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {exampleGroups
+                        {groups
                             .filter(g =>
                                 g.topic.toLowerCase().includes(searchQuery.toLowerCase())
                             )
@@ -119,15 +96,18 @@ export default function MyStudyGroups() {
                                 >
                                     <StudyGroupCard
                                         topic={group.topic}
-                                        membersCount={group.students.length}
-                                        contentsCount={group.contents.length}
-                                        description={group.description}
+                                        membersCount={group.students?.length || 0}
+                                        contentsCount={group.contents?.length || 0}
+                                        description={group.description ? group.description : 'No description yet'}
                                         onJoin={() => openModal(group)}
                                     />
                                 </div>
                             ))}
                     </div>
                 </div>
+                {groups.length === 0 && (
+                        <p className="text-gray-500 italic mt-8">No study groups found. Register correctly or you are not logged.</p>
+                    )}
             </div>
 
             {/* Modal. Cuando selecciono un grupo */}
