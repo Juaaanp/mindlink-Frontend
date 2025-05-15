@@ -100,9 +100,12 @@ export default function MyChatsPage() {
         <div className="flex flex-1">
           <div className="flex flex-col w-72 bg-[#18181b] border-r border-[#313440]">
             {/* Formulario para crear chat */}
-            <form onSubmit={createChat} className="flex gap-2 p-4 bg-[#18181b] border-b border-[#313440]">
+            <form
+              onSubmit={createChat}
+              className="flex flex-wrap gap-2 p-4 bg-[#18181b] border-b border-[#313440]"
+            >
               <input
-                className="flex-1 bg-[#23232b] text-white rounded-lg px-4 py-2 outline-none border border-[#313440]"
+                className="flex-1 min-w-0 bg-[#23232b] text-white rounded-lg px-4 py-2 outline-none border border-[#313440]"
                 type="text"
                 placeholder="ID del otro usuario para chatear"
                 value={newParticipantId}
@@ -111,6 +114,7 @@ export default function MyChatsPage() {
               <button
                 type="submit"
                 className="bg-gradient-to-r from-[#2873c6] to-[#7f53ac] text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition"
+                style={{ whiteSpace: 'nowrap' }}
               >
                 Crear chat
               </button>
