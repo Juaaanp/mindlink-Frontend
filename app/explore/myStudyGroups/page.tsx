@@ -8,52 +8,32 @@ import { StudyGroup } from "@/types/StudyGroup";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/api";
+import Loader from "@/components/Loader";
 
 //Formación de grupos de estudio automáticos con base en intereses compartidos. Formación automática de grupos de estudio.
 //Generación automática de conexiones entre usuarios (grafo), si han valorado contenidos similares o han estado en el mismo grupo de estudio.
 //Pestaña: Grupos de estudio sugeridos. Participar en grupos de estudio sugeridos automáticamente.
 //LISTAS ENLAZADAS
+//Editar y eliminar contenidos?, actualizar la descripción y los contenidos reactivamente? 
 
 export default function MyStudyGroups() {
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [groups, setGroups] = useState<StudyGroup[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<StudyGroup | null>(null); //Cuando esto no es null se abre el modal
     const { user } = useAuth();
-
-    // Ejemplos de grupos (ahora con campo contents)
-    const exampleGroups: StudyGroup[] = [
-        {
-            id: 1,
-            topic: "Matemáticas Discretas",
-            description: "Grupo para dudas, ejercicios y recursos de la materia.",
-            students: [
-                { id: 1, name: "Ana Ruiz", email: "ana@example.com" },
-                { id: 2, name: "Carlos Pérez", email: "carlos@example.com" }, //Hacer dto asi y mandar desde el back, 
-            ],
-            contents: ["Apuntes Capítulo 1", "Ejercicios Semana 2"],
-        },
-        {
-            id: 2,
-            topic: "Frontend Development",
-            description: "Learn React, Tailwind, and more with peers.",
-            students: [
-                { id: 3, name: "Alice", email: "alice@example.com" },
-                { id: 4, name: "Bob", email: "bob@example.com" },
-                { id: 5, name: "Charlie", email: "charlie@example.com" },
-            ],
-            contents: ["Repo GitHub", "Guía de estilo", "Componentes base"],
-        },
-        // ...otros grupos
-    ];
+    const [loader, setLoader] = useState(false);
 
     useEffect(() => {
-
-        //Loader, funcionalidad de agregar contenidos, editarlos?, borrarlos?, agregar descripción
+        if (!user) {
+            return;
+        }
+        setLoader(true);
         if (!user?.id) return;
         api
             .get(`/studyGroups/findByStudent/${user.id}`)
             .then((res) => setGroups(res.data))
-            .catch(console.error);
+            .catch(console.error)
+            .finally(() => setLoader(false));
     }, [user?.id]);
 
     const openModal = (group: StudyGroup) => {
@@ -62,7 +42,7 @@ export default function MyStudyGroups() {
     const closeModal = () => {
         setSelectedGroup(null);
     };
-    const handleJoin = (group: StudyGroup) => {
+    const handleAddContent = (group: StudyGroup) => { //Con el grupo seleccionado
         // Aquí iría tu lógica de "unirse al grupo"
         console.log("Uniéndose al grupo", group.id);
         closeModal();
@@ -81,6 +61,7 @@ export default function MyStudyGroups() {
             {/* Contenido */}
             <div className="">
 
+                {loader && (<><Loader/></>)}
                 {/* Contenedor del grid alineado a la izquierda */}
                 <div className="flex justify-start">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -115,7 +96,6 @@ export default function MyStudyGroups() {
                 <StudyGroupModal
                     group={selectedGroup}
                     onClose={closeModal}
-                    onJoin={() => handleJoin(selectedGroup)}
                 />
             )}
         </main>
