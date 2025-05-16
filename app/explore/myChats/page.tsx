@@ -6,7 +6,6 @@ import NavBarAuth from '@/components/NavBars/NavBarAuth';
 import Sidebar from '@/components/Sidebar';
 import { useAuth } from '@/context/AuthContext';
 
-// Tipos definidos aquí mismo
 type Chat = {
   id: string;
   participantEmails: string[];
@@ -38,7 +37,7 @@ export default function MyChatsPage() {
 
       // Obtener los correos de los otros participantes
       const otherEmails: string[] = Array.from(
-        new Set(
+        new Set<string>(
           res.data
             .flatMap((chat: Chat) => chat.participantEmails)
             .filter((email: string) => email !== user.email)
@@ -53,7 +52,7 @@ export default function MyChatsPage() {
             const resp = await api.get(`/students/email/${email}`);
             nameMap[email] = resp.data.name;
           } catch {
-            nameMap[email] = email; // fallback al correo si no se encuentra
+            nameMap[email] = email;
           }
         })
       );
@@ -61,21 +60,66 @@ export default function MyChatsPage() {
     });
   }, [user?.email]);
 
-  // Cargar mensajes del chat seleccionado
+  // Cargar mensajes y obtener nombres de remitentes
   useEffect(() => {
-    if (selectedChat) {
-      api.get(`/messages/byChat/${selectedChat.id}`).then(res => setMessages(res.data));
-    }
+    if (!selectedChat) return;
+    api.get(`/messages/byChat/${selectedChat.id}`).then(async res => {
+      setMessages(res.data);
+
+      // Obtener los emails de los remitentes que no están en el mapa
+      const senderEmails: string[] = Array.from(
+        new Set<string>(res.data.map((msg: Message) => msg.senderId as string))
+      ).filter((email: string) => !(email in emailToName));
+
+      if (senderEmails.length > 0) {
+        const nameMap = { ...emailToName };
+        await Promise.all(
+          senderEmails.map(async (email: string) => {
+            try {
+              const resp = await api.get(`/students/email/${email}`);
+              nameMap[email] = resp.data.name;
+            } catch {
+              nameMap[email] = email;
+            }
+          })
+        );
+        setEmailToName(nameMap);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChat]);
 
   // Auto-refresh de mensajes cada 2 segundos
   useEffect(() => {
     if (!selectedChat) return;
     const interval = setInterval(() => {
-      api.get(`/messages/byChat/${selectedChat.id}`).then(res => setMessages(res.data));
+      api.get(`/messages/byChat/${selectedChat.id}`).then(async res => {
+        setMessages(res.data);
+
+        // Obtener los emails de los remitentes que no están en el mapa
+        const senderEmails: string[] = Array.from(
+          new Set<string>(res.data.map((msg: Message) => msg.senderId as string))
+        ).filter((email: string) => !(email in emailToName));
+
+        if (senderEmails.length > 0) {
+          const nameMap = { ...emailToName };
+          await Promise.all(
+            senderEmails.map(async (email: string) => {
+              try {
+                const resp = await api.get(`/students/email/${email}`);
+                nameMap[email] = resp.data.name;
+              } catch {
+                nameMap[email] = email;
+              }
+            })
+          );
+          setEmailToName(nameMap);
+        }
+      });
     }, 2000);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChat]);
 
   // Enviar mensaje
@@ -97,7 +141,6 @@ export default function MyChatsPage() {
     e.preventDefault();
     if (!user?.email || !newParticipantEmail.trim()) return;
 
-    // Buscar si ya existe un chat con esos participantes
     const res = await api.get(`/chats/participant/${user.email}`);
     const existingChat = res.data.find((chat: Chat) =>
       chat.participantEmails.includes(newParticipantEmail.trim()) &&
@@ -110,7 +153,6 @@ export default function MyChatsPage() {
       return;
     }
 
-    // Si no existe, crear uno nuevo
     const createRes = await api.post('/chats', {
       participantEmails: [user.email, newParticipantEmail.trim()],
     });
@@ -125,20 +167,13 @@ export default function MyChatsPage() {
 
   return (
     <>
-      {/* Navbar fijo */}
       <header className="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a] shadow-md">
         <NavBarAuth onSearchChange={setSearchQuery} />
       </header>
-
-      {/* Contenedor principal con padding top por el navbar */}
       <main className="pt-16 min-h-screen bg-[#0a0a0a] text-white font-poppins flex transition-all duration-300">
-        {/* Sidebar a la izquierda */}
         <Sidebar />
-
-        {/* Contenido principal */}
         <div className="flex flex-1">
           <div className="flex flex-col w-72 bg-[#18181b] border-r border-[#313440]">
-            {/* Formulario para crear chat */}
             <form
               onSubmit={createChat}
               className="flex flex-wrap gap-2 p-4 bg-[#18181b] border-b border-[#313440]"
@@ -158,7 +193,6 @@ export default function MyChatsPage() {
                 Crear chat
               </button>
             </form>
-            {/* Lista de chats */}
             <h3 className="text-lg font-semibold px-6 py-4 border-b border-[#313440]">Mis chats</h3>
             <ul className="flex-1 overflow-y-auto">
               {chats.map(chat => (
@@ -177,10 +211,7 @@ export default function MyChatsPage() {
               ))}
             </ul>
           </div>
-
-          {/* Área de mensajes */}
           <section className="flex-1 flex flex-col justify-between bg-[#23232b]">
-            {/* Mensajes */}
             <div className="flex-1 overflow-y-auto p-10 flex flex-col gap-4">
               {messages.map(msg => (
                 <div
@@ -191,12 +222,12 @@ export default function MyChatsPage() {
                       : 'self-start bg-gradient-to-r from-[#2873c6] to-[#7f53ac]'
                   }`}
                 >
+                  <div className="font-bold">{emailToName[msg.senderId] || msg.senderId}</div>
                   {msg.text}
                   <div className="text-xs text-gray-400 mt-1">{new Date(msg.timestamp).toLocaleString()}</div>
                 </div>
               ))}
             </div>
-            {/* Input de mensaje */}
             {selectedChat && (
               <form
                 onSubmit={sendMessage}
