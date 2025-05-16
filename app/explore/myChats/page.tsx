@@ -28,6 +28,8 @@ export default function MyChatsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [newParticipantEmail, setNewParticipantEmail] = useState('');
   const [emailToName, setEmailToName] = useState<{ [email: string]: string }>({});
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editText, setEditText] = useState<string>('');
 
   // Cargar chats y nombres de participantes
   useEffect(() => {
@@ -138,6 +140,14 @@ export default function MyChatsPage() {
     setMessages(messages.filter(m => m.id !== id));
   };
 
+  // Editar mensaje
+  const editMessage = async (id: string) => {
+    await api.put(`/messages/${id}`, { text: editText });
+    setEditingId(null);
+    setEditText('');
+    api.get(`/messages/byChat/${selectedChat?.id}`).then(res => setMessages(res.data));
+  };
+
   // Crear nuevo chat (evitar duplicados)
   const createChat = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -227,18 +237,51 @@ export default function MyChatsPage() {
                   <div className="font-bold flex justify-between items-center">
                     {emailToName[msg.senderId] || msg.senderId}
                     {msg.senderId === user.email && (
-                      <button
-                        className="ml-2 text-red-400 hover:text-red-600 text-xs"
-                        onClick={() => deleteMessage(msg.id)}
-                        title="Eliminar mensaje"
-                        type="button"
-                      >
-                        🗑️
-                      </button>
+                      <div className="flex gap-2">
+                        <button
+                          className="text-blue-400 hover:text-blue-600 text-xs"
+                          onClick={() => {
+                            setEditingId(msg.id);
+                            setEditText(msg.text);
+                          }}
+                          type="button"
+                          title="Editar mensaje"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          className="text-red-400 hover:text-red-600 text-xs"
+                          onClick={() => deleteMessage(msg.id)}
+                          type="button"
+                          title="Eliminar mensaje"
+                        >
+                          🗑️
+                        </button>
+                      </div>
                     )}
                   </div>
-                  {msg.text}
-                  <div className="text-xs text-gray-400 mt-1">{new Date(msg.timestamp).toLocaleString()}</div>
+                  {editingId === msg.id ? (
+                    <form
+                      onSubmit={async e => {
+                        e.preventDefault();
+                        await editMessage(msg.id);
+                      }}
+                      className="flex gap-2 mt-2"
+                    >
+                      <input
+                        className="flex-1 bg-[#18181b] text-white rounded-lg px-2 py-1 outline-none border border-[#313440]"
+                        value={editText}
+                        onChange={e => setEditText(e.target.value)}
+                      />
+                      <button type="submit" className="text-green-400 hover:text-green-600 text-xs">Guardar</button>
+                      <button type="button" className="text-gray-400 hover:text-gray-600 text-xs" onClick={() => setEditingId(null)}>Cancelar</button>
+                    </form>
+                  ) : (
+                    <>
+                      {msg.text}
+                      <div className="text-xs text-gray-400 mt-1">{new Date(msg.timestamp).toLocaleString()}</div>
+                    </>
+                  )}
                 </div>
               ))}
             </div>
