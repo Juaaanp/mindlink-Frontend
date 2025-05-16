@@ -28,11 +28,37 @@ export default function MyChatsPage() {
   const [input, setInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [newParticipantEmail, setNewParticipantEmail] = useState('');
+  const [emailToName, setEmailToName] = useState<{ [email: string]: string }>({});
 
-  // Cargar chats del usuario autenticado
+  // Cargar chats y nombres de participantes
   useEffect(() => {
     if (!user?.email) return;
-    api.get(`/chats/participant/${user.email}`).then(res => setChats(res.data));
+    api.get(`/chats/participant/${user.email}`).then(async res => {
+      setChats(res.data);
+
+      // Obtener los correos de los otros participantes
+      const otherEmails: string[] = Array.from(
+        new Set(
+          res.data
+            .flatMap((chat: Chat) => chat.participantEmails)
+            .filter((email: string) => email !== user.email)
+        )
+      );
+
+      // Buscar los nombres de esos correos
+      const nameMap: { [email: string]: string } = {};
+      await Promise.all(
+        otherEmails.map(async (email: string) => {
+          try {
+            const resp = await api.get(`/students/email/${email}`);
+            nameMap[email] = resp.data.name;
+          } catch {
+            nameMap[email] = email; // fallback al correo si no se encuentra
+          }
+        })
+      );
+      setEmailToName(nameMap);
+    });
   }, [user?.email]);
 
   // Cargar mensajes del chat seleccionado
@@ -143,7 +169,10 @@ export default function MyChatsPage() {
                   }`}
                   onClick={() => setSelectedChat(chat)}
                 >
-                  Chat con: {chat.participantEmails.filter(email => email !== user?.email).join(', ')}
+                  Chat con: {chat.participantEmails
+                    .filter(email => email !== user?.email)
+                    .map(email => emailToName[email] || email)
+                    .join(', ')}
                 </li>
               ))}
             </ul>
