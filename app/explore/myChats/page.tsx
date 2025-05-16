@@ -35,7 +35,6 @@ export default function MyChatsPage() {
     api.get(`/chats/participant/${user.email}`).then(async res => {
       setChats(res.data);
 
-      // Obtener los correos de los otros participantes
       const otherEmails: string[] = Array.from(
         new Set<string>(
           res.data
@@ -44,7 +43,6 @@ export default function MyChatsPage() {
         )
       );
 
-      // Buscar los nombres de esos correos
       const nameMap: { [email: string]: string } = {};
       await Promise.all(
         otherEmails.map(async (email: string) => {
@@ -66,7 +64,6 @@ export default function MyChatsPage() {
     api.get(`/messages/byChat/${selectedChat.id}`).then(async res => {
       setMessages(res.data);
 
-      // Obtener los emails de los remitentes que no están en el mapa
       const senderEmails: string[] = Array.from(
         new Set<string>(res.data.map((msg: Message) => msg.senderId as string))
       ).filter((email: string) => !(email in emailToName));
@@ -96,7 +93,6 @@ export default function MyChatsPage() {
       api.get(`/messages/byChat/${selectedChat.id}`).then(async res => {
         setMessages(res.data);
 
-        // Obtener los emails de los remitentes que no están en el mapa
         const senderEmails: string[] = Array.from(
           new Set<string>(res.data.map((msg: Message) => msg.senderId as string))
         ).filter((email: string) => !(email in emailToName));
@@ -134,6 +130,12 @@ export default function MyChatsPage() {
     });
     setInput('');
     api.get(`/messages/byChat/${selectedChat.id}`).then(res => setMessages(res.data));
+  };
+
+  // Eliminar mensaje
+  const deleteMessage = async (id: string) => {
+    await api.delete(`/messages/${id}`);
+    setMessages(messages.filter(m => m.id !== id));
   };
 
   // Crear nuevo chat (evitar duplicados)
@@ -222,7 +224,19 @@ export default function MyChatsPage() {
                       : 'self-start bg-gradient-to-r from-[#2873c6] to-[#7f53ac]'
                   }`}
                 >
-                  <div className="font-bold">{emailToName[msg.senderId] || msg.senderId}</div>
+                  <div className="font-bold flex justify-between items-center">
+                    {emailToName[msg.senderId] || msg.senderId}
+                    {msg.senderId === user.email && (
+                      <button
+                        className="ml-2 text-red-400 hover:text-red-600 text-xs"
+                        onClick={() => deleteMessage(msg.id)}
+                        title="Eliminar mensaje"
+                        type="button"
+                      >
+                        🗑️
+                      </button>
+                    )}
+                  </div>
                   {msg.text}
                   <div className="text-xs text-gray-400 mt-1">{new Date(msg.timestamp).toLocaleString()}</div>
                 </div>
