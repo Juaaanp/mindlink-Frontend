@@ -2,10 +2,23 @@
 
 import React, { useEffect, useState } from 'react';
 import api from '@/lib/api';
-import { Chat, Message } from '@/types/Chat';
 import NavBarAuth from '@/components/NavBars/NavBarAuth';
 import Sidebar from '@/components/Sidebar';
 import { useAuth } from '@/context/AuthContext';
+
+// Tipos definidos aquí mismo
+type Chat = {
+  id: string;
+  participantEmails: string[];
+};
+
+type Message = {
+  id: string;
+  chatId: string;
+  senderId: string;
+  text: string;
+  timestamp: string;
+};
 
 export default function MyChatsPage() {
   const { user } = useAuth();
@@ -14,13 +27,13 @@ export default function MyChatsPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [newParticipantId, setNewParticipantId] = useState('');
+  const [newParticipantEmail, setNewParticipantEmail] = useState('');
 
   // Cargar chats del usuario autenticado
   useEffect(() => {
-    if (!user?.id) return;
-    api.get(`/chats/participant/${user.id}`).then(res => setChats(res.data));
-  }, [user?.id]);
+    if (!user?.email) return;
+    api.get(`/chats/participant/${user.email}`).then(res => setChats(res.data));
+  }, [user?.email]);
 
   // Cargar mensajes del chat seleccionado
   useEffect(() => {
@@ -34,7 +47,7 @@ export default function MyChatsPage() {
     if (!selectedChat) return;
     const interval = setInterval(() => {
       api.get(`/messages/byChat/${selectedChat.id}`).then(res => setMessages(res.data));
-    }, 2000); // cada 2 segundos
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [selectedChat]);
@@ -42,10 +55,10 @@ export default function MyChatsPage() {
   // Enviar mensaje
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || !selectedChat || !user?.id) return;
+    if (!input.trim() || !selectedChat || !user?.email) return;
     await api.post('/messages', {
       chatId: selectedChat.id,
-      senderId: user.id,
+      senderId: user.email,
       text: input,
       timestamp: new Date().toISOString(),
     });
@@ -53,31 +66,31 @@ export default function MyChatsPage() {
     api.get(`/messages/byChat/${selectedChat.id}`).then(res => setMessages(res.data));
   };
 
-  // Crear nuevo chat (modificado para evitar duplicados)
+  // Crear nuevo chat (evitar duplicados)
   const createChat = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user?.id || !newParticipantId.trim()) return;
+    if (!user?.email || !newParticipantEmail.trim()) return;
 
     // Buscar si ya existe un chat con esos participantes
-    const res = await api.get(`/chats/participant/${user.id}`);
+    const res = await api.get(`/chats/participant/${user.email}`);
     const existingChat = res.data.find((chat: Chat) =>
-      chat.participantIds.includes(newParticipantId.trim()) &&
-      chat.participantIds.length === 2
+      chat.participantEmails.includes(newParticipantEmail.trim()) &&
+      chat.participantEmails.length === 2
     );
 
     if (existingChat) {
       setSelectedChat(existingChat);
-      setNewParticipantId('');
+      setNewParticipantEmail('');
       return;
     }
 
     // Si no existe, crear uno nuevo
     const createRes = await api.post('/chats', {
-      participantIds: [user.id, newParticipantId.trim()],
+      participantEmails: [user.email, newParticipantEmail.trim()],
     });
     setChats([...chats, createRes.data]);
     setSelectedChat(createRes.data);
-    setNewParticipantId('');
+    setNewParticipantEmail('');
   };
 
   if (!user) {
@@ -107,9 +120,9 @@ export default function MyChatsPage() {
               <input
                 className="flex-1 min-w-0 bg-[#23232b] text-white rounded-lg px-4 py-2 outline-none border border-[#313440]"
                 type="text"
-                placeholder="ID del otro usuario para chatear"
-                value={newParticipantId}
-                onChange={e => setNewParticipantId(e.target.value)}
+                placeholder="Correo del otro usuario para chatear"
+                value={newParticipantEmail}
+                onChange={e => setNewParticipantEmail(e.target.value)}
               />
               <button
                 type="submit"
@@ -130,7 +143,7 @@ export default function MyChatsPage() {
                   }`}
                   onClick={() => setSelectedChat(chat)}
                 >
-                  Chat con: {chat.participantIds.filter(id => String(id) !== String(user?.id)).join(', ')}
+                  Chat con: {chat.participantEmails.filter(email => email !== user?.email).join(', ')}
                 </li>
               ))}
             </ul>
@@ -144,7 +157,7 @@ export default function MyChatsPage() {
                 <div
                   key={msg.id}
                   className={`max-w-md px-6 py-3 rounded-2xl text-white font-medium shadow-md ${
-                    String(msg.senderId) === String(user?.id)
+                    String(msg.senderId) === String(user?.email)
                       ? 'self-end bg-gradient-to-l from-[#7f53ac] to-[#2873c6]'
                       : 'self-start bg-gradient-to-r from-[#2873c6] to-[#7f53ac]'
                   }`}
