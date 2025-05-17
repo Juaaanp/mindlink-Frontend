@@ -10,7 +10,6 @@ import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/api";
 import Loader from "@/components/Loader";
 
-//Formación de grupos de estudio automáticos con base en intereses compartidos. Formación automática de grupos de estudio.
 //Generación automática de conexiones entre usuarios (grafo), si han valorado contenidos similares o han estado en el mismo grupo de estudio.
 //Pestaña: Grupos de estudio sugeridos. Participar en grupos de estudio sugeridos automáticamente.
 //LISTAS ENLAZADAS
@@ -42,11 +41,11 @@ export default function MyStudyGroups() {
     const closeModal = () => {
         setSelectedGroup(null);
     };
-    const handleAddContent = (group: StudyGroup) => { //Con el grupo seleccionado
-        // Aquí iría tu lógica de "unirse al grupo"
-        console.log("Uniéndose al grupo", group.id);
-        closeModal();
-    };
+    // const handleAddContent = (group: StudyGroup) => { //Con el grupo seleccionado
+    //     // Aquí iría tu lógica de "unirse al grupo"
+    //     console.log("Uniéndose al grupo", group.id);
+    //     closeModal();
+    // };
 
     return (
         <main className="pt-20 min-h-screen bg-[#0a0a0a] text-white p-6 font-poppins relative">

@@ -105,7 +105,7 @@ export default function CreateContentForm({ onInterestSelect }: CreateContentFor
 
         <input
           type="text"
-          placeholder="Topic"
+          placeholder="Body"
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
           className="bg-[#2a2a2a] text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"

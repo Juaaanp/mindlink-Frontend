@@ -4,7 +4,7 @@ import { useState } from 'react';
 import CreateContentForm from '@/components/ContentComponents/CreateContentForm';
 import {
   Cpu,
-  
+
   Brush,
   Music,
   Heart,
@@ -13,6 +13,7 @@ import {
   MapPin
 } from 'lucide-react';
 import NavBarAuth from '@/components/NavBars/NavBarAuth';
+import Sidebar from '@/components/Sidebar';
 
 export default function CreateContentPage() {
   const [interest, setInterest] = useState('');
@@ -45,8 +46,11 @@ export default function CreateContentPage() {
   return (
     <div className="min-h-screen flex bg-[#0a0a0a] text-white p-8">
       <header className="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a] shadow-md">
-                <NavBarAuth onSearchChange={setSearchQuery} />
-            </header>
+        <NavBarAuth onSearchChange={setSearchQuery} />
+      </header>
+
+      <Sidebar/>
+
       {/* Formulario a la izquierda */}
       <div className="w-1/3">
         <CreateContentForm onInterestSelect={setInterest} />
