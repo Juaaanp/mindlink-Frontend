@@ -173,6 +173,18 @@ export default function MyChatsPage() {
     setNewParticipantEmail('');
   };
 
+  
+  const deleteChat = async (chatId: string) => {
+    if (window.confirm('¿Seguro que deseas eliminar este chat?')) {
+      await api.delete(`/chats/${chatId}`);
+      setChats(prev => prev.filter(c => c.id !== chatId));
+      if (selectedChat?.id === chatId) {
+        setSelectedChat(null);
+        setMessages([]);
+      }
+    }
+  };
+
   if (!user) {
     return <div className="flex-1 flex items-center justify-center text-gray-400">Cargando usuario...</div>;
   }
@@ -212,13 +224,25 @@ export default function MyChatsPage() {
                   key={chat.id}
                   className={`px-6 py-4 cursor-pointer hover:bg-[#23232b] transition ${
                     selectedChat?.id === chat.id ? 'bg-[#23232b] font-bold' : ''
-                  }`}
+                  } flex items-center justify-between`}
                   onClick={() => setSelectedChat(chat)}
                 >
-                  Chat con: {chat.participantEmails
-                    .filter(email => email !== user?.email)
-                    .map(email => emailToName[email] || email)
-                    .join(', ')}
+                  <span>
+                    Chat con: {chat.participantEmails
+                      .filter(email => email !== user?.email)
+                      .map(email => emailToName[email] || email)
+                      .join(', ')}
+                  </span>
+                  <button
+                    className="ml-2 text-red-400 hover:text-red-600 text-xs"
+                    title="Eliminar chat"
+                    onClick={e => {
+                      e.stopPropagation();
+                      deleteChat(chat.id);
+                    }}
+                  >
+                    🗑️
+                  </button>
                 </li>
               ))}
             </ul>
