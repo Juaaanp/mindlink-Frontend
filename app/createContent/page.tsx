@@ -4,7 +4,7 @@ import { useState } from 'react';
 import CreateContentForm from '@/components/ContentComponents/CreateContentForm';
 import {
   Cpu,
-
+  TestTubes,
   Brush,
   Music,
   Heart,
@@ -25,7 +25,7 @@ export default function CreateContentPage() {
       case 'Technology':
         return <Cpu {...commonProps} />;
       case 'Science':
-        return <Brush {...commonProps} />;
+        return <TestTubes {...commonProps} />;
       case 'Art':
         return <Brush {...commonProps} />;
       case 'Music':
@@ -44,7 +44,7 @@ export default function CreateContentPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-[#0a0a0a] text-white p-8">
+    <div className="min-h-screen flex bg-[#0a0a0a] text-white p-8 font-poppins">
       <header className="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a] shadow-md">
         <NavBarAuth onSearchChange={setSearchQuery} />
       </header>

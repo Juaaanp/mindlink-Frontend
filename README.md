@@ -17,6 +17,8 @@ user.name; etc
                                 g.topic.toLowerCase().includes(searchQuery.toLowerCase())
                             )
 - En Study Groups el estudiante puede gestionar los grupos (participar) pero no va a ser mimebro
+- Las valoraciones aún no se envían con el id del autenticado
+- Valoraciones quitadas de MyContents
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 

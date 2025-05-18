@@ -96,6 +96,7 @@ export default function CreateContentForm({ onInterestSelect }: CreateContentFor
                     onInterestSelect?.(e.target.value);
                   }}
                   className="accent-cyan-400 cursor-pointer"
+                  required
                 />
                 <span>{option}</span>
               </label>

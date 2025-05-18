@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import { Content } from "@/types/Content";
-import { Valoration } from "@/types/Valoration";
+import { NewValoration } from "@/types/Valoration";
 
 type Props = {
   content: Content;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function ContentModal({ content, onClose }: Props) {
-  const [ratings, setRatings] = useState<Valoration[]>([]);
+  const [ratings, setRatings] = useState<NewValoration[]>([]);
 
   useEffect(() => { //Para cargar las valoraciones
     api
@@ -20,7 +20,7 @@ export default function ContentModal({ content, onClose }: Props) {
       .catch(console.error);
   }, [content.id]);
 
-  const handleAddRating = (newRating: Valoration) => { //Para agregar valoraciones
+  const handleAddRating = (newRating: NewValoration) => { //Para agregar valoraciones
     api
       .post("/valorations", {
         content: content.id,

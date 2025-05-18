@@ -1,70 +1,49 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContentCard from '@/components/ContentComponents/ContentCard';
 import { Content } from '@/types/Content';
 import NavBarAuth from '@/components/NavBars/NavBarAuth';
 import Sidebar from '@/components/Sidebar';
-
-// Datos simulados para los contenidos
-const initialContents: Content[] = [
-  {
-    id: '1',
-    title: 'Título del contenido 1',
-    type: 'Apunte',
-    body: 'Descripción breve del contenido 1...',
-    authorName: 'Juan Pérez',
-    imageUrl: '/fondoPrueba.jpg',
-  },
-  {
-    id: '2',
-    title: 'Título del contenido 2',
-    type: 'Resumen',
-    body: 'Descripción breve del contenido 2...',
-    authorName: 'María López',
-    imageUrl: '/fondoPrueba.jpg',
-  },
-  {
-    id: '3',
-    title: 'Título del contenido 3',
-    type: 'Ejercicio',
-    body: 'Descripción breve del contenido 3...',
-    authorName: 'Carlos Ruiz',
-    imageUrl: '/fondoPrueba.jpg',
-  },
-];
+import { useAuth } from '@/context/AuthContext';
+import api from '@/lib/api';
 
 export default function MyContents() {
+  const [contents, setContents] = useState<Content[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const { user } = useAuth();
 
-  const [selected, setSelected] = useState('Mis contenidos');
-  const [contents, setContents] = useState<Content[]>(initialContents);
-  const [searchQuery, setSearchQuery] = useState<String>('');
+  useEffect(() => {
+    if (!user?.id) return;
+
+    api.get(`/contents/findByIdStudent/${user.id}`) //Esto retorna los contenidos sin el nombre del autor
+      .then((res) => setContents(res.data))
+      .catch(console.error);
+  }, [user?.id]);
 
   const handleEdit = (updated: Content) => {
-    setContents(prev => prev.map(c => c.id === updated.id ? updated : c));
+    setContents((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
   };
 
   const handleDelete = (id: string) => {
-    setContents(prev => prev.filter(c => c.id !== id));
+    setContents((prev) => prev.filter((c) => c.id !== id));
   };
 
   return (
-
-    <main className="pt-16 text-white p-6 font-poppins">
-
-      <header className="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a] shadow-md">
+    <main className="min-h-screen flex flex-col bg-black text-black font-poppins">
+      {/* NavBar */}
+      <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
         <NavBarAuth onSearchChange={setSearchQuery} />
       </header>
 
-      <Sidebar />
+      {/* Layout */}
+      <div className="pt-16 flex flex-row min-h-screen">
+        <Sidebar />
 
-      {/* Main content */}
-      <main className="flex-1 flex flex-col bg-[#18181b] h-[calc(100vh-4rem)]">
+        <div className="flex-1 px-8 py-10">
 
-        {/* Contenidos */}
-        <section className="flex-1 flex flex-col items-start p-10 gap-6 bg-[#18181b]">
-          <div className="flex flex-wrap gap-8">
-            {contents.map(content => (
+          <div className="flex flex-wrap gap-6 justify-start">
+            {contents.map((content) => (
               <ContentCard
                 key={content.id}
                 content={content}
@@ -73,9 +52,13 @@ export default function MyContents() {
                 onDelete={handleDelete}
               />
             ))}
+
+            {contents.length === 0 && (
+              <p className="text-gray-500 italic">No hay contenidos disponibles.</p>
+            )}
           </div>
-        </section>
-      </main>
+        </div>
+      </div>
     </main>
   );
 }
