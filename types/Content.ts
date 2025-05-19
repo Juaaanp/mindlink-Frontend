@@ -4,6 +4,5 @@ export type Content = {
     type: string;
     body: string;
     authorName?: string;
-    imageUrl: string // si decides resolverlo en el backend
   };
   

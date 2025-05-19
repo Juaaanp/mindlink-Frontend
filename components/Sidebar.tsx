@@ -45,6 +45,7 @@ export default function Sidebar() {
     { label: 'Help Requests', path: '/explore/helpRequests' },
     { label: 'My study groups', path: '/explore/myStudyGroups' },
     { label: 'My chats', path: '/explore/myChats' },
+    { label: 'Affinity Graph', path: '/explore/affinityGraph'}
   ];
 
   return (
