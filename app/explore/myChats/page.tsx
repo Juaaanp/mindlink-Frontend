@@ -19,6 +19,12 @@ type Message = {
   timestamp: string;
 };
 
+type StudentSuggestion = {
+  id: string;
+  name: string;
+  email: string;
+};
+
 export default function MyChatsPage() {
   const { user } = useAuth();
   const [chats, setChats] = useState<Chat[]>([]);
@@ -30,6 +36,7 @@ export default function MyChatsPage() {
   const [emailToName, setEmailToName] = useState<{ [email: string]: string }>({});
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState<string>('');
+  const [suggestions, setSuggestions] = useState<StudentSuggestion[]>([]);
 
   // Cargar chats y nombres de participantes
   useEffect(() => {
@@ -120,6 +127,12 @@ export default function MyChatsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChat]);
 
+  // Cargar sugerencias de estudiantes
+  useEffect(() => {
+    if (!user?.id) return;
+    api.get(`/students/suggestions/${user.id}`).then(res => setSuggestions(res.data));
+  }, [user?.id]);
+
   // Enviar mensaje
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -173,7 +186,6 @@ export default function MyChatsPage() {
     setNewParticipantEmail('');
   };
 
-  
   const deleteChat = async (chatId: string) => {
     if (window.confirm('¿Seguro que deseas eliminar este chat?')) {
       await api.delete(`/chats/${chatId}`);
@@ -245,6 +257,24 @@ export default function MyChatsPage() {
                   </button>
                 </li>
               ))}
+            </ul>
+            <h3 className="text-lg font-semibold px-6 py-4 border-b border-[#313440]">Sugerencias</h3>
+            <ul className="flex-1 overflow-y-auto">
+              {suggestions.map(s => (
+                <li key={s.id} className="px-6 py-3 border-b border-[#23232b] flex flex-col">
+                  <span className="font-bold">{s.name}</span>
+                  <span className="text-xs text-gray-400">{s.email}</span>
+                  <button
+                    className="mt-2 bg-gradient-to-r from-[#2873c6] to-[#7f53ac] text-white px-3 py-1 rounded-lg text-xs"
+                    onClick={() => setNewParticipantEmail(s.email)}
+                  >
+                    Chatear
+                  </button>
+                </li>
+              ))}
+              {suggestions.length === 0 && (
+                <li className="px-6 py-3 text-gray-400 text-xs">Sin sugerencias por ahora</li>
+              )}
             </ul>
           </div>
           <section className="flex-1 flex flex-col justify-between bg-[#23232b]">
