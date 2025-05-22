@@ -6,6 +6,16 @@ import NavBarAuth from '@/components/NavBars/NavBarAuth';
 import Sidebar from '@/components/Sidebar';
 import { useAuth } from '@/context/AuthContext';
 
+type Student = {
+  id: string;
+  name: string;
+  email: string;
+  studyGroupsIdList?: string[];
+  interests?: string[];
+  commonGroups?: string[];
+  commonInterests?: string[];
+};
+
 type Chat = {
   id: string;
   participantEmails: string[];
@@ -19,12 +29,6 @@ type Message = {
   timestamp: string;
 };
 
-type StudentSuggestion = {
-  id: string;
-  name: string;
-  email: string;
-};
-
 export default function MyChatsPage() {
   const { user } = useAuth();
   const [chats, setChats] = useState<Chat[]>([]);
@@ -36,7 +40,7 @@ export default function MyChatsPage() {
   const [emailToName, setEmailToName] = useState<{ [email: string]: string }>({});
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState<string>('');
-  const [suggestions, setSuggestions] = useState<StudentSuggestion[]>([]);
+  const [suggestions, setSuggestions] = useState<Student[]>([]);
 
   // Cargar chats y nombres de participantes
   useEffect(() => {
@@ -264,6 +268,16 @@ export default function MyChatsPage() {
                 <li key={s.id} className="px-6 py-3 border-b border-[#23232b] flex flex-col">
                   <span className="font-bold">{s.name}</span>
                   <span className="text-xs text-gray-400">{s.email}</span>
+                  {s.commonGroups && s.commonGroups.length > 0 && (
+                    <span className="text-xs text-blue-400 mt-1">
+                      Grupos en común: {s.commonGroups.join(', ')}
+                    </span>
+                  )}
+                  {s.commonInterests && s.commonInterests.length > 0 && (
+                    <span className="text-xs text-green-400 mt-1">
+                      Intereses en común: {s.commonInterests.join(', ')}
+                    </span>
+                  )}
                   <button
                     className="mt-2 bg-gradient-to-r from-[#2873c6] to-[#7f53ac] text-white px-3 py-1 rounded-lg text-xs"
                     onClick={() => setNewParticipantEmail(s.email)}
