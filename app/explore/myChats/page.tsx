@@ -191,7 +191,7 @@ export default function MyChatsPage() {
   };
 
   const deleteChat = async (chatId: string) => {
-    if (window.confirm('¿Seguro que deseas eliminar este chat?')) {
+    if (window.confirm('Are you sure you want to delete this chat?')) {
       await api.delete(`/chats/${chatId}`);
       setChats(prev => prev.filter(c => c.id !== chatId));
       if (selectedChat?.id === chatId) {
@@ -202,7 +202,7 @@ export default function MyChatsPage() {
   };
 
   if (!user) {
-    return <div className="flex-1 flex items-center justify-center text-gray-400">Cargando usuario...</div>;
+    return <div className="flex-1 flex items-center justify-center text-gray-400">Loading user...</div>;
   }
 
   return (
@@ -221,7 +221,7 @@ export default function MyChatsPage() {
               <input
                 className="flex-1 min-w-0 bg-[#23232b] text-white rounded-lg px-4 py-2 outline-none border border-[#313440]"
                 type="text"
-                placeholder="Correo del otro usuario para chatear"
+                placeholder="Email of the user to chat with"
                 value={newParticipantEmail}
                 onChange={e => setNewParticipantEmail(e.target.value)}
               />
@@ -230,10 +230,10 @@ export default function MyChatsPage() {
                 className="bg-gradient-to-r from-[#2873c6] to-[#7f53ac] text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition"
                 style={{ whiteSpace: 'nowrap' }}
               >
-                Crear chat
+                Create chat
               </button>
             </form>
-            <h3 className="text-lg font-semibold px-6 py-4 border-b border-[#313440]">Mis chats</h3>
+            <h3 className="text-lg font-semibold px-6 py-4 border-b border-[#313440]">My chats</h3>
             <ul className="flex-1 overflow-y-auto">
               {chats.map(chat => (
                 <li
@@ -244,14 +244,14 @@ export default function MyChatsPage() {
                   onClick={() => setSelectedChat(chat)}
                 >
                   <span>
-                    Chat con: {chat.participantEmails
+                    Chat with: {chat.participantEmails
                       .filter(email => email !== user?.email)
                       .map(email => emailToName[email] || email)
                       .join(', ')}
                   </span>
                   <button
                     className="ml-2 text-red-400 hover:text-red-600 text-xs"
-                    title="Eliminar chat"
+                    title="Delete chat"
                     onClick={e => {
                       e.stopPropagation();
                       deleteChat(chat.id);
@@ -262,7 +262,7 @@ export default function MyChatsPage() {
                 </li>
               ))}
             </ul>
-            <h3 className="text-lg font-semibold px-6 py-4 border-b border-[#313440]">Sugerencias</h3>
+            <h3 className="text-lg font-semibold px-6 py-4 border-b border-[#313440]">Suggestions</h3>
             <ul className="flex-1 overflow-y-auto">
               {suggestions.map(s => (
                 <li key={s.id} className="px-6 py-3 border-b border-[#23232b] flex flex-col">
@@ -270,24 +270,24 @@ export default function MyChatsPage() {
                   <span className="text-xs text-gray-400">{s.email}</span>
                   {s.commonGroups && s.commonGroups.length > 0 && (
                     <span className="text-xs text-blue-400 mt-1">
-                      Grupos en común: {s.commonGroups.join(', ')}
+                      Common groups: {s.commonGroups.join(', ')}
                     </span>
                   )}
                   {s.commonInterests && s.commonInterests.length > 0 && (
                     <span className="text-xs text-green-400 mt-1">
-                      Intereses en común: {s.commonInterests.join(', ')}
+                      Common interests: {s.commonInterests.join(', ')}
                     </span>
                   )}
                   <button
                     className="mt-2 bg-gradient-to-r from-[#2873c6] to-[#7f53ac] text-white px-3 py-1 rounded-lg text-xs"
                     onClick={() => setNewParticipantEmail(s.email)}
                   >
-                    Chatear
+                    Chat
                   </button>
                 </li>
               ))}
               {suggestions.length === 0 && (
-                <li className="px-6 py-3 text-gray-400 text-xs">Sin sugerencias por ahora</li>
+                <li className="px-6 py-3 text-gray-400 text-xs">No suggestions for now</li>
               )}
             </ul>
           </div>
@@ -313,7 +313,7 @@ export default function MyChatsPage() {
                             setEditText(msg.text);
                           }}
                           type="button"
-                          title="Editar mensaje"
+                          title="Edit message"
                         >
                           ✏️
                         </button>
@@ -321,7 +321,7 @@ export default function MyChatsPage() {
                           className="text-red-400 hover:text-red-600 text-xs"
                           onClick={() => deleteMessage(msg.id)}
                           type="button"
-                          title="Eliminar mensaje"
+                          title="Delete message"
                         >
                           🗑️
                         </button>
@@ -341,8 +341,8 @@ export default function MyChatsPage() {
                         value={editText}
                         onChange={e => setEditText(e.target.value)}
                       />
-                      <button type="submit" className="text-green-400 hover:text-green-600 text-xs">Guardar</button>
-                      <button type="button" className="text-gray-400 hover:text-gray-600 text-xs" onClick={() => setEditingId(null)}>Cancelar</button>
+                      <button type="submit" className="text-green-400 hover:text-green-600 text-xs">Save</button>
+                      <button type="button" className="text-gray-400 hover:text-gray-600 text-xs" onClick={() => setEditingId(null)}>Cancel</button>
                     </form>
                   ) : (
                     <>
@@ -361,7 +361,7 @@ export default function MyChatsPage() {
                 <input
                   className="flex-1 bg-[#18181b] text-white rounded-lg px-4 py-2 outline-none border border-[#313440] focus:border-[#7f53ac] transition"
                   type="text"
-                  placeholder="Escribe un mensaje..."
+                  placeholder="Type a message..."
                   value={input}
                   onChange={e => setInput(e.target.value)}
                 />
@@ -375,7 +375,7 @@ export default function MyChatsPage() {
             )}
             {!selectedChat && (
               <div className="flex-1 flex items-center justify-center text-gray-400">
-                Selecciona un chat para ver los mensajes
+                Select a chat to view messages
               </div>
             )}
           </section>
