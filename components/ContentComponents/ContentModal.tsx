@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import { Content } from "@/types/Content";
 import { NewValoration } from "@/types/Valoration";
+import { useAuth } from "@/context/AuthContext";
 
 type Props = {
   content: Content;
@@ -12,6 +13,7 @@ type Props = {
 
 export default function ContentModal({ content, onClose }: Props) {
   const [ratings, setRatings] = useState<NewValoration[]>([]);
+  const {user} = useAuth();
 
   useEffect(() => { //Para cargar las valoraciones
     api
@@ -21,10 +23,11 @@ export default function ContentModal({ content, onClose }: Props) {
   }, [content.id]);
 
   const handleAddRating = (newRating: NewValoration) => { //Para agregar valoraciones
+    if(!user) return;
     api
       .post("/valorations", {
         content: content.id,
-        student: "student-id", // reemplazar con ID real, autenticación
+        student: user.id.toString(), // reemplazar con ID real, autenticación
         ...newRating, //Rate y comment vienen del formulario
       })
       .then(() => {
