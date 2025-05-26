@@ -8,7 +8,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleExplorarOnClick = (): void => {
-    router.push('cum.jpeg');
+    router.push('WhatsApp Image 2025-05-26 at 4.48.26 PM.jpeg');
   }
 
   return (
