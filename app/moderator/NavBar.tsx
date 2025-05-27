@@ -37,7 +37,7 @@ export default function NavBarModerator() {
             </div>
             <div>
                 <button
-                className='hover:text-cyan-400 font-poppins' 
+                className='hover:text-cyan-400 font-poppins font-bold' 
                 onClick={() => handleNavigation("/login")}>
                     Log out
                 </button>

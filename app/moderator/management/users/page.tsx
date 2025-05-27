@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import UserCard from '@/components/UserCard';
 import api from '@/lib/api';
 import { Student } from '@/types/Student';
+import NavBarModerator from '../../NavBar';
+import { Users } from 'phosphor-react'; 
 
 export default function ManageUsers() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -30,8 +32,12 @@ export default function ManageUsers() {
   }, []);
 
   return (
-    <div className="p-6 space-y-4 font-poppins">
-      <h2 className="text-2xl font-bold mb-4">Manage Users</h2>
+    <div className="p-24 space-y-4 font-poppins">
+      <NavBarModerator/>
+      <div className= "flex">
+        <h1 className="text-3xl font-bold mb-4 mr-4">Manage Users</h1>
+        <Users size={35} className="mb-4"/>
+      </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {students.map(student => (
           <UserCard key={student.id} student={student} onDelete={handleDelete} />

@@ -24,7 +24,7 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="pt-24 min-h-screen bg-gray-900 text-gray-100">
+        <div className="pt-24 min-h-screen bg-gray-900 text-gray-100 font-poppins">
             {/* Header */}
             <NavBarModerator/>
 
@@ -33,13 +33,13 @@ export default function Dashboard() {
                 <div className="px-4 sm:px-0">
                     {/* Gestión */}
                     <div className="mb-12">
-                        <h2 className="text-xl font-semibold mb-4">Management Tools</h2>
+                        <h2 className="text-2xl font-semibold mb-4">Management Tools</h2>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             <button
                                 onClick={() => handleNavigation('/moderator/management/users')}
                                 className="flex flex-col items-center p-6 bg-gray-800 rounded-lg shadow-md hover:bg-indigo-600 transition duration-300"
                             >
-                                <UserCircleIcon className="h-10 w-10 text-indigo-400 mb-3" />
+                                <UserCircleIcon className="h-10 w-10 text-[#00DBE3] mb-3" />
                                 <span className="text-lg font-semibold">Manage Users</span>
                                 <span className="text-sm text-gray-400">View and edit user profiles</span>
                             </button>
@@ -48,7 +48,7 @@ export default function Dashboard() {
                                 onClick={() => handleNavigation('/moderator/management/contents')}
                                 className="flex flex-col items-center p-6 bg-gray-800 rounded-lg shadow-md hover:bg-indigo-600 transition duration-300"
                             >
-                                <DocumentTextIcon className="h-10 w-10 text-indigo-400 mb-3" />
+                                <DocumentTextIcon className="h-10 w-10 text-[#00DBE3] mb-3" />
                                 <span className="text-lg font-semibold">Manage Content</span>
                                 <span className="text-sm text-gray-400">Edit and publish content</span>
                             </button>
@@ -57,7 +57,7 @@ export default function Dashboard() {
                                 onClick={() => handleNavigation('/moderator/management/graph')}
                                 className="flex flex-col items-center p-6 bg-gray-800 rounded-lg shadow-md hover:bg-indigo-600 transition duration-300"
                             >
-                                <ChartBarIcon className="h-10 w-10 text-indigo-400 mb-3" />
+                                <ChartBarIcon className="h-10 w-10 text-[#00DBE3] mb-3" />
                                 <span className="text-lg font-semibold">View Graph</span>
                                 <span className="text-sm text-gray-400">Visualize student relationships</span>
                             </button>
@@ -65,7 +65,7 @@ export default function Dashboard() {
                                 onClick={() => handleNavigation('/moderator/management/helpRequests')}
                                 className="flex flex-col items-center p-6 bg-gray-800 rounded-lg shadow-md hover:bg-indigo-600 transition duration-300"
                             >
-                                <ChatAlt2Icon className="h-10 w-10 text-indigo-400 mb-3" />
+                                <ChatAlt2Icon className="h-10 w-10 text-[#00DBE3] mb-3" />
                                 <span className="text-lg font-semibold">View Help Requests</span>
                                 <span className="text-sm text-gray-400">Answer student requests</span>
                             </button>
@@ -74,14 +74,12 @@ export default function Dashboard() {
 
                     {/* Reportes */}
                     <div>
-                        <h2 className="text-xl font-semibold mb-4">Reports</h2>
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        <h2 className="text-2xl font-semibold mb-4">Reports</h2>
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {[
                                 { label: 'Most valued content.', path: '/reports/1' },
                                 { label: 'Students with more connections', path: '/reports/2' },
                                 { label: 'Shorter roads between two students', path: '/reports/3' },
-                                { label: 'Detection of study communities (clusters)', path: '/reports/4' },
-                                { label: 'Participation levels', path: '/reports/4' },
                             ].map((report, index) => (
                                 <button
                                     key={index}
