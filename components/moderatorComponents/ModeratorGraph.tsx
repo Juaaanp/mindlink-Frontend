@@ -8,26 +8,21 @@ import { FullGraphDTO } from '@/types/FullGraphDTO';
 
 export default function ModeratorGraph() {
   const [graphData, setGraphData] = useState<{
-    nodes: { id: string }[];
-    links: { source: string; target: string }[];
-  }>({ nodes: [], links: [] });
+  nodes: { id: string; name: string }[];
+  links: { source: string; target: string }[];
+}>({ nodes: [], links: [] });
+
 
   useEffect(() => {
-    const fetchGraph = async () => {
-      const response = await api.get<FullGraphDTO>('/students/affinity/fullgraph');
-      const { nodes, links } = response.data;
+  const fetchGraph = async () => {
+    const response = await api.get<FullGraphDTO>('/students/affinity/fullgraph');
+    const { nodes, links } = response.data;
 
-      const formattedNodes = nodes.map(id => ({ id }));
-      const formattedLinks = links.map(link => ({
-        source: link.source,
-        target: link.target,
-      }));
+    setGraphData({ nodes, links });
+  };
 
-      setGraphData({ nodes: formattedNodes, links: formattedLinks });
-    };
-
-    fetchGraph();
-  }, []);
+  fetchGraph();
+}, []);
 
   return (
     <div className="w-full h-[600px]">
@@ -35,9 +30,10 @@ export default function ModeratorGraph() {
         graphData={graphData}
         nodeAutoColorBy="id"
         linkColor={() => 'rgba(0,255,255,0.5)'}
-        nodeLabel="id"
+        nodeLabel={(node) => `Nombre: ${node.name}`}
       />
     </div>
   );
 }
+
 

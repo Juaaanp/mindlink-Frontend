@@ -78,8 +78,7 @@ export default function Dashboard() {
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {[
                                 { label: 'Most valued content.', path: '/moderator/reports/MostValuedContents' },
-                                { label: 'Students with more connections', path: '/moderator/reports/StudentWithMoreConnections' },
-                                { label: 'Shorter roads between two students', path: '/moderator/reports/ShortestWay' },
+                                { label: 'Students with more help requests', path: '/moderator/reports/MostHelpRequests' },
                             ].map((report, index) => (
                                 <button
                                     key={index}

@@ -1,6 +1,12 @@
-import { LinkDTO } from "./LinkDTO";
 
 export interface FullGraphDTO {
-  nodes: string[];
-  links: LinkDTO[];
+  nodes: {
+    id: string;
+    name: string; // <-- agrega esto
+  }[];
+  links: {
+    source: string;
+    target: string;
+  }[];
 }
+
