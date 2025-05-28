@@ -77,9 +77,9 @@ export default function Dashboard() {
                         <h2 className="text-2xl font-semibold mb-4">Reports</h2>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {[
-                                { label: 'Most valued content.', path: '/reports/1' },
-                                { label: 'Students with more connections', path: '/reports/2' },
-                                { label: 'Shorter roads between two students', path: '/reports/3' },
+                                { label: 'Most valued content.', path: '/moderator/reports/MostValuedContents' },
+                                { label: 'Students with more connections', path: '/moderator/reports/StudentWithMoreConnections' },
+                                { label: 'Shorter roads between two students', path: '/moderator/reports/ShortestWay' },
                             ].map((report, index) => (
                                 <button
                                     key={index}
